@@ -39,6 +39,11 @@ const routes = [
     path: '/multiple-select',
     name: 'select',
     component: () => import('../views/multiple-select')
+  },
+  {
+    path: '/date-picker',
+    name: 'date-picker',
+    component: () => import('../views/date-picker')
   }
 ]
 
