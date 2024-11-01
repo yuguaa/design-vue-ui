@@ -23,6 +23,7 @@
         :rowKey="rowKey"
         :transformCellText="({ text }) => (!text && text !== 0 ? '--' : text)"
         v-bind="$attrs"
+        v-on="filteredListeners"
         ref="tableRef"
       >
         <span slot="c-index" slot-scope="text, record, index">
@@ -84,12 +85,14 @@
         @change="changeSize"
       />
     </div>
+    <scroll-bar :scrollNodeQuery="scrollNodeQuery"/>
   </div>
 </template>
 
 <script>
 import DTooltip from '../d-tooltip/index.vue'
 import TableSet from './set.vue'
+import ScrollBar from './scroll-bar.vue'
 import props from './config/prop'
 import { Table, Pagination, Badge } from 'ant-design-vue'
 const BadgeStatus = {
@@ -112,7 +115,8 @@ export default {
     DTooltip,
     ATable: Table,
     APagination: Pagination,
-    ABadge: Badge
+    ABadge: Badge,
+    ScrollBar
   },
   data () {
     return {
@@ -150,7 +154,13 @@ export default {
     }
 
   },
-  updated () {},
+  computed: {
+    filteredListeners () {
+      const { changeSize, onSelectChange, setColumns, ...otherEvents } =
+        this.$listeners
+      return otherEvents
+    }
+  },
   methods: {
     initScopedSlots () {
       // 获取 外面组件的slot集合

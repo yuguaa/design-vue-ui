@@ -42,5 +42,10 @@ export default {
   showPag: {
     type: Boolean,
     default: true
+  },
+  // 滚动的节点
+  scrollNodeQuery: {
+    type: String,
+    default: '.xm_global_table .ant-table-body'
   }
 }

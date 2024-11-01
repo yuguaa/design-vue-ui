@@ -16,6 +16,11 @@ const routes = [
     component: () => import('../views/cascader')
   },
   {
+    path: '/table',
+    name: 'table',
+    component: () => import('../views/table')
+  },
+  {
     path: '/textarea',
     name: 'textarea',
     component: () => import('../views/textarea')
