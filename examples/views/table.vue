@@ -6,12 +6,13 @@
     :dataSource="dataSource"
     @setColumns="setColumns"
     :showPag="false"
+    sticky
     rowKey="key"
     :scroll="{ x: 800 }"
   >
     <a slot="name" slot-scope="{ text }">{{ text }}</a>
     <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-    <span slot="action" slot-scope="{ text, record }">
+    <span slot="action" slot-scope="{  record }">
       <a>Invite 一 {{ record.name }}</a>
       <a-divider type="vertical" />
       <a>Delete</a>

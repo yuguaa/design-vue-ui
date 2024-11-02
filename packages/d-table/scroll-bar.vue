@@ -36,6 +36,11 @@ export default {
       parentNode: null
     }
   },
+  // watch: {
+  //   isShow (val) {
+  //     if (val) this.initResize()
+  //   }
+  // },
   beforeDestroy () {
     this.scrollNode &&
       this.scrollNode.removeEventListener('scroll', this.handleScroll, true)
@@ -54,14 +59,16 @@ export default {
       }
       return null
     },
+    // 原生滑动条  滚动的时候  监听事件
     handleScroll (e) {
       const _dScrollNode = this.$refs.dScrollRef
       const _scrollNode = this.scrollNode
       const _dScrollLeft = (e.target.scrollLeft / _scrollNode.scrollWidth) * this.bodyScrollW
-      if (_dScrollNode.scrollLeft !== _dScrollLeft) {
+      if (_dScrollNode.scrollLeft < _dScrollLeft - 1 || _dScrollNode.scrollLeft > _dScrollLeft + 1) {
         _dScrollNode.scrollLeft = _dScrollLeft
       }
     },
+    // 处理 竖 划定监听  自定义滑动什么时候显示 什么时候隐藏
     bodyScroll () {
       //   console.log('dd')
       const _scrollNode = this.scrollNode

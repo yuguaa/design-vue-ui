@@ -85,7 +85,7 @@
         @change="changeSize"
       />
     </div>
-    <scroll-bar :scrollNodeQuery="scrollNodeQuery"/>
+    <scroll-bar :scrollNodeQuery="scrollNodeQuery" v-if="sticky"/>
   </div>
 </template>
 

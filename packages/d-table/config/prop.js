@@ -47,5 +47,9 @@ export default {
   scrollNodeQuery: {
     type: String,
     default: '.xm_global_table .ant-table-body'
+  },
+  sticky: {
+    type: Boolean,
+    default: false
   }
 }
