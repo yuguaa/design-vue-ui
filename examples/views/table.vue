@@ -1,6 +1,6 @@
 <template>
   <div style="display: flex;">
-   <!-- <div style="position: relative;">
+   <div style="position: relative;width: 400px;">
       <div class="demo1" style="height: 800px; overflow-y: auto;position: relative;">
         <div style="height: 1000px;">
 
@@ -11,7 +11,7 @@
         </a-table>
       </div>
     <DScrollBar scrollNodeEl=".demo1 .ant-table-body" rootEl=".demo1"/>
-   </div> -->
+   </div>
     <div style="width: 400px;height: 600px;">
 
     </div>
