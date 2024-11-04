@@ -4,14 +4,14 @@
     class="xm_scroll_box"
     @scroll="onScroll"
     ref="dScrollRef"
-    :style="!isShow ? { bottom: '-200px' } : {}"
+    v-if="isShow"
   >
     <div class="xm_scroll_bar" :style="{ width: bodyScrollW + 'px' }"></div>
   </div>
 </template>
 <script>
 export default {
-  name: 'ScrollBar',
+  name: 'DScrollBar',
   props: {
     // 滚动的节点  可是 String 类型的 querySelector   或者 el
     scrollNodeEl: {
@@ -21,12 +21,13 @@ export default {
     // 对应于哪一个节点元素进行显示和隐藏，默认 html 滑动到
     rootEl: {
       type: [String, Object],
-      default: 'html'
+      default: ''
     }
   },
   data () {
     return {
       isShow: true,
+      rootNode: null,
       scrollNode: null, // 对应的节点
       bodyNode: null,
       bodyScrollW: 0, // 对应nodeScrollW
@@ -44,14 +45,14 @@ export default {
   beforeDestroy () {
     this.scrollNode &&
       this.scrollNode.removeEventListener('scroll', this.handleScroll, true)
-    window.removeEventListener('scroll', this.bodyScroll, true)
+    this.rootNode.removeEventListener('scroll', this.bodyScroll, true)
     window.removeEventListener('resize', this.initResize)
     // document.body && document.body.removeChild(this.$el)
   },
   methods: {
     // 判断一个变量是字符串还是 HTML 元素
-    getScrollNodeEl () {
-      const _el = this.scrollNodeEl
+    getScrollNodeEl (el) {
+      const _el = el || this.scrollNodeEl
       if (typeof _el === 'string') {
         return document.querySelector(_el)
       } else if (_el instanceof HTMLElement) {
@@ -61,10 +62,15 @@ export default {
     },
     // 原生滑动条  滚动的时候  监听事件
     handleScroll (e) {
+      if (!this.isShow) return
       const _dScrollNode = this.$refs.dScrollRef
       const _scrollNode = this.scrollNode
-      const _dScrollLeft = (e.target.scrollLeft / _scrollNode.scrollWidth) * this.bodyScrollW
-      if (_dScrollNode.scrollLeft < _dScrollLeft - 1 || _dScrollNode.scrollLeft > _dScrollLeft + 1) {
+      const _dScrollLeft =
+        (e.target.scrollLeft / _scrollNode.scrollWidth) * this.bodyScrollW
+      if (
+        _dScrollNode.scrollLeft < _dScrollLeft - 1 ||
+        _dScrollNode.scrollLeft > _dScrollLeft + 1
+      ) {
         _dScrollNode.scrollLeft = _dScrollLeft
       }
     },
@@ -73,9 +79,10 @@ export default {
       //   console.log('dd')
       const _scrollNode = this.scrollNode
       const rect = _scrollNode.getBoundingClientRect()
-      const windowHeight = window.innerHeight
-      const distance = windowHeight - rect.bottom // 计算距离
-      this.isShow = distance < 0 && rect.top < windowHeight
+      const rootReact = this.rootEl ? this.rootNode.getBoundingClientRect() : null
+      const rootHeight = !rootReact ? this.rootNode.innerHeight : (rootReact.height + rootReact.top)
+      const distance = rootHeight - rect.bottom // 计算距离
+      this.isShow = distance < 0 && rect.top < rootHeight
     },
     initResize () {
       this.$nextTick(() => {
@@ -106,11 +113,14 @@ export default {
     async init () {
       await this.$nextTick()
       this.scrollNode = this.getScrollNodeEl()
+      this.rootNode = this.rootEl ? this.getScrollNodeEl(this.rootEl) : window
       this.scrollNode &&
-      this.scrollNode.addEventListener('scroll', this.handleScroll, {
+        this.scrollNode.addEventListener('scroll', this.handleScroll, {
+          passive: true
+        })
+      this.rootNode.addEventListener('scroll', this.bodyScroll, {
         passive: true
       })
-      window.addEventListener('scroll', this.bodyScroll, { passive: true })
       window.addEventListener('resize', this.initResize)
       setTimeout(() => {
         this.initResize()
@@ -146,13 +156,13 @@ export default {
   }
 }
 .xm_scroll_box {
-  position: fixed;
-  width: calc(100% - 88px);
+  position: sticky;
+  width: 100%;
   bottom: 0;
-  left: 24px;
+  left: 0;
   height: 20px;
   z-index: 999;
-  margin: 0 20px;
+  // margin: 0 20px;
   overflow: auto;
   .scoll_bar(5px, 8px, #bbb);
   .xm_scroll_bar {

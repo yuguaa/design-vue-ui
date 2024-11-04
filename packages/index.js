@@ -1,6 +1,7 @@
 // 暴露组件
 import DTooltip from './d-tooltip'
 import DTable from './d-table'
+import DScrollBar from './d-table/scroll-bar.vue'
 import DCascader from './d-cascader'
 import DTextarea from './d-textarea'
 import DInput from './d-input'
@@ -20,6 +21,10 @@ PageLoading.install = (vue) => {
 
 DTable.install = (vue) => {
   vue.component(DTable.name, DTable)
+}
+
+DScrollBar.install = (vue) => {
+  vue.component(DScrollBar.name, DScrollBar)
 }
 
 DCascader.install = (vue) => {
@@ -52,6 +57,7 @@ const components = [
   DTable,
   DCascader,
   DTextarea,
+  DScrollBar,
   DInput,
   DInputNumber,
   DSelect,
@@ -82,6 +88,7 @@ export {
   DTable,
   DCascader,
   DTextarea,
+  DScrollBar,
   DInput,
   DInputNumber,
   DSelect,
