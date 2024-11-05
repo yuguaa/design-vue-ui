@@ -15,7 +15,7 @@ if (isProd) {
         pure_funcs: ['console.log'] // 移除console
       }
     },
-    sourceMap: false,
+    // sourceMap: false,
     parallel: true
   }))
 }
