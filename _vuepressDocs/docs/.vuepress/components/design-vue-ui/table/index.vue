@@ -3,6 +3,7 @@
     <d-table
       :columns="columns"
       :dataSource="dataSource"
+      :total="dataSource.length"
     >
     </d-table>
     <d-table

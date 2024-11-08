@@ -27,7 +27,7 @@
         ref="tableRef"
       >
         <span slot="c-index" slot-scope="text, record, index">
-          {{ index | indexFilter(pag) }}
+          {{ index | indexFilter(resultPag) }}
         </span>
         <template
           v-for="column in tableSlots"
@@ -78,9 +78,9 @@
         show-quick-jumper
         show-size-changer
         :show-total="(total) => `共 ${total} 条`"
-        :total="pag.total"
-        :current="pag.page"
-        :pageSize="pag.page_size"
+        :total="total"
+        :current="resultPag.page"
+        :pageSize="resultPag.page_size"
         @showSizeChange="changeSize"
         @change="changeSize"
       />
@@ -123,7 +123,8 @@ export default {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
-      columnsCopy: []
+      columnsCopy: [],
+      resultPag: {}
     }
   },
   created () {
@@ -161,7 +162,22 @@ export default {
       return otherEvents
     }
   },
+  watch: {
+    pag (val) {
+      Object.assign(this.resultPag, val || {})
+    }
+  },
   methods: {
+    initPag () {
+      const defaultPag = {
+        page: 1,
+        page_size: 10
+      }
+      this.resultPag = {
+        ...defaultPag,
+        ...(this.pag || {})
+      }
+    },
     initScopedSlots () {
       // 获取 外面组件的slot集合
       const _scopedSlots = this.$scopedSlots

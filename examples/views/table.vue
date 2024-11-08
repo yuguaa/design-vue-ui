@@ -1,41 +1,54 @@
 <template>
-  <div style="display: flex;">
-   <div style="position: relative;width: 400px;">
-      <div class="demo1" style="height: 800px; overflow-y: auto;position: relative;">
-        <div style="height: 1000px;">
-
-        </div>
-        <a-table :columns="columns" :data-source="dataSource" :scroll="{ x: 1200 }">
-          <a slot="name" slot-scope="text">{{ text }}</a>
-          <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-        </a-table>
-      </div>
-    <DScrollBar scrollNodeEl=".demo1 .ant-table-body" rootEl=".demo1"/>
-   </div>
-    <div style="width: 400px;height: 600px;">
-
-    </div>
-    <div style="width: 400px;">
-      <d-table
+  <div>
+    <d-table
       :columns="columns"
       :dataSource="dataSource"
-      @setColumns="setColumns"
-      :showPag="false"
-      sticky
-      rowKey="key"
-      :scroll="{ x: 800 }"
+      :total="dataSource.length"
     >
-      <a slot="name" slot-scope="{ text }">{{ text }}</a>
-      <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-      <span slot="action" slot-scope="{ record }">
-        <a>Invite 一 {{ record.name }}</a>
-        <a-divider type="vertical" />
-        <a>Delete</a>
-        <a-divider type="vertical" />
-        <a class="ant-dropdown-link"> More actions <a-icon type="down" /> </a>
-      </span>
     </d-table>
-    <div style="height: 500px"></div>
+    <div style="display: flex">
+      <div style="position: relative; width: 400px">
+        <div
+          class="demo1"
+          style="height: 800px; overflow-y: auto; position: relative"
+        >
+          <div style="height: 1000px"></div>
+          <a-table
+            :columns="columns"
+            :data-source="dataSource"
+            :scroll="{ x: 1200 }"
+          >
+            <a slot="name" slot-scope="text">{{ text }}</a>
+            <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+          </a-table>
+        </div>
+        <DScrollBar scrollNodeEl=".demo1 .ant-table-body" rootEl=".demo1" />
+      </div>
+      <div style="width: 400px; height: 600px"></div>
+      <div style="width: 400px">
+        <d-table
+          :columns="columns"
+          :dataSource="dataSource"
+          @setColumns="setColumns"
+          :showPag="false"
+          sticky
+          rowKey="key"
+          :scroll="{ x: 800 }"
+        >
+          <a slot="name" slot-scope="{ text }">{{ text }}</a>
+          <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+          <span slot="action" slot-scope="{ record }">
+            <a>Invite 一 {{ record.name }}</a>
+            <a-divider type="vertical" />
+            <a>Delete</a>
+            <a-divider type="vertical" />
+            <a class="ant-dropdown-link">
+              More actions <a-icon type="down" />
+            </a>
+          </span>
+        </d-table>
+        <div style="height: 500px"></div>
+      </div>
     </div>
   </div>
 </template>
@@ -78,7 +91,7 @@ export default {
   },
   created () {
     const dataSource = []
-    for (let index = 0; index < 30; index++) {
+    for (let index = 0; index < 20; index++) {
       dataSource.push({
         key: index,
         name: 'Jim Green',

@@ -34,10 +34,13 @@ export default {
     default: () => {
       return {
         page: 1,
-        page_size: 10,
-        total: 0
+        page_size: 10
       }
     }
+  },
+  total: {
+    type: Number,
+    default: 0
   },
   showPag: {
     type: Boolean,

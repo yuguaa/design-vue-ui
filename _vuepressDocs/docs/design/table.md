@@ -32,3 +32,5 @@ mode 为 tags 并 手动输入添加的 未支持
 </box>
 
 ## API
+
+<design-vue-ui-table-_table />
