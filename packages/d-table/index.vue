@@ -78,7 +78,7 @@
         show-quick-jumper
         show-size-changer
         :show-total="(total) => `共 ${total} 条`"
-        :total="total"
+        :total="autoPag ? $attrs.dataSource.length : total"
         :current="resultPag.page"
         :pageSize="resultPag.page_size"
         @showSizeChange="changeSize"
@@ -163,8 +163,11 @@ export default {
     }
   },
   watch: {
-    pag (val) {
-      Object.assign(this.resultPag, val || {})
+    pag: {
+      handler (val) {
+        Object.assign(this.resultPag, val || {})
+      },
+      immediate: true
     }
   },
   methods: {

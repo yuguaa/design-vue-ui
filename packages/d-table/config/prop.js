@@ -38,6 +38,10 @@ export default {
       }
     }
   },
+  autoPag: {
+    type: Boolean,
+    default: false
+  },
   total: {
     type: Number,
     default: 0
