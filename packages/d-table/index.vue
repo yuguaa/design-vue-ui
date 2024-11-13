@@ -22,6 +22,7 @@
         :pagination="false"
         :rowKey="rowKey"
         :transformCellText="({ text }) => (!text && text !== 0 ? '--' : text)"
+        :dataSource="currentSource"
         v-bind="$attrs"
         v-on="filteredListeners"
         ref="tableRef"
@@ -160,12 +161,21 @@ export default {
       const { changeSize, onSelectChange, setColumns, ...otherEvents } =
         this.$listeners
       return otherEvents
+    },
+    currentSource () {
+      const { page, page_size: pageSize } = this.resultPag
+      const _dataSource = this.$attrs.dataSource
+      if (!this.autoPag) return _dataSource
+      if (!_dataSource || !_dataSource.length) return []
+      return _dataSource.slice((page - 1) * pageSize, page * pageSize)
     }
   },
   watch: {
     pag: {
       handler (val) {
-        Object.assign(this.resultPag, val || {})
+        this.resultPag = {
+          ...(val || {})
+        }
       },
       immediate: true
     }
@@ -238,6 +248,10 @@ export default {
     changeSize (page, pageSize) {
       // this.pag.page = page
       // this.pag.page_size = pageSize
+      if (this.autoPag) {
+        this.resultPag.page = page
+        this.resultPag.page_size = pageSize
+      }
       this.$nextTick(() => {
         this.$emit('changeSize', page, pageSize)
       })
