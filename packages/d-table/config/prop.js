@@ -29,26 +29,11 @@ export default {
     type: String,
     default: 'id'
   },
-  pag: {
+  pagination: {
     type: Object,
     default: () => {
-      return {
-        page: 1,
-        page_size: 10
-      }
+      return {}
     }
-  },
-  autoPag: {
-    type: Boolean,
-    default: false
-  },
-  total: {
-    type: Number,
-    default: 0
-  },
-  showPag: {
-    type: Boolean,
-    default: true
   },
   // 滚动的节点
   scrollNodeQuery: {

@@ -19,10 +19,16 @@
       </div>
       <a-table
         :columns="columns"
-        :pagination="false"
         :rowKey="rowKey"
         :transformCellText="({ text }) => (!text && text !== 0 ? '--' : text)"
-        :dataSource="currentSource"
+        :pagination="!pagination ? false : {
+          'show-total': (total) => `共 ${total} 条`,
+          'show-quick-jumper': true,
+          'show-size-changer': true,
+          'onShowSizeChange': changeSize,
+          'onChange': changeSize,
+          ...pagination
+        }"
         v-bind="$attrs"
         v-on="filteredListeners"
         ref="tableRef"
@@ -124,8 +130,7 @@ export default {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
-      columnsCopy: [],
-      resultPag: {}
+      columnsCopy: []
     }
   },
   created () {
@@ -150,47 +155,17 @@ export default {
       return txtObj[val] || txtObj.default || val
     },
     indexFilter (index, pag) {
-      return pag.page > 1
-        ? index + 1 + (pag.page - 1) * pag.page_size
-        : index + 1
+      if (!pag) return index
+      return pag.current > 1 ? index + 1 + (pag.current - 1) * pag.pageSize : index + 1
     }
-
   },
   computed: {
     filteredListeners () {
-      const { changeSize, onSelectChange, setColumns, ...otherEvents } =
-        this.$listeners
+      const { changeSize, onSelectChange, setColumns, ...otherEvents } = this.$listeners
       return otherEvents
-    },
-    currentSource () {
-      const { page, page_size: pageSize } = this.resultPag
-      const _dataSource = this.$attrs.dataSource
-      if (!this.autoPag) return _dataSource
-      if (!_dataSource || !_dataSource.length) return []
-      return _dataSource.slice((page - 1) * pageSize, page * pageSize)
-    }
-  },
-  watch: {
-    pag: {
-      handler (val) {
-        this.resultPag = {
-          ...(val || {})
-        }
-      },
-      immediate: true
     }
   },
   methods: {
-    initPag () {
-      const defaultPag = {
-        page: 1,
-        page_size: 10
-      }
-      this.resultPag = {
-        ...defaultPag,
-        ...(this.pag || {})
-      }
-    },
     initScopedSlots () {
       // 获取 外面组件的slot集合
       const _scopedSlots = this.$scopedSlots
@@ -206,7 +181,7 @@ export default {
     },
     getScopedSlotsType (key) {
       let _type = ''
-      this.columns.some(v => {
+      this.columns.some((v) => {
         const _slot = this.findKeyByValue(v.slots, key)
         const _scopeSlot = this.findKeyByValue(v.scopedSlots, key)
         _type = _slot || _scopeSlot
@@ -224,36 +199,26 @@ export default {
     getSlots (val) {
       const _cRender = ['c-tip', 'c-badge']
       this.tableSlots = val.filter((v) => {
-        const isExist = _cRender.some(q => v.scopedSlots?.customRender.indexOf(q) !== -1)
-        return (
-          v.scopedSlots?.customRender &&
-          isExist
-        )
+        const isExist = _cRender.some((q) => v.scopedSlots?.customRender.indexOf(q) !== -1)
+        return v.scopedSlots?.customRender && isExist
       })
     },
     initColumns () {
       // 处理 tip status
       const _cRender = ['c-tip', 'c-badge']
       this.columns.forEach((item, index) => {
-        if (
-          item.scopedSlots &&
-          _cRender.indexOf(item.scopedSlots?.customRender) !== -1
-        ) {
+        if (item.scopedSlots && _cRender.indexOf(item.scopedSlots?.customRender) !== -1) {
           item.scopedSlots.customRender = item.scopedSlots.customRender + index
         }
       })
       this.columnsCopy = [...this.columns]
     },
     // 页码改变
-    changeSize (page, pageSize) {
-      // this.pag.page = page
-      // this.pag.page_size = pageSize
-      if (this.autoPag) {
-        this.resultPag.page = page
-        this.resultPag.page_size = pageSize
-      }
+    changeSize (current, pageSize) {
+      this.pagination.current = current
+      this.pagination.pageSize = pageSize
       this.$nextTick(() => {
-        this.$emit('changeSize', page, pageSize)
+        this.$emit('changeSize', current, pageSize)
       })
     },
     // 切换table多选
