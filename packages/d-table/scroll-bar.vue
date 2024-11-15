@@ -15,7 +15,7 @@ export default {
   props: {
     // 滚动的节点  可是 String 类型的 querySelector   或者 el
     scrollNodeEl: {
-      type: [String, Object],
+      type: [String, Element],
       default: '.xm_global_table .ant-table-body'
     },
     // 对应于哪一个节点元素进行显示和隐藏，默认 html 滑动到
@@ -76,13 +76,15 @@ export default {
     },
     // 处理 竖 划定监听  自定义滑动什么时候显示 什么时候隐藏
     bodyScroll () {
-      //   console.log('dd')
+      console.log('dd')
       const _scrollNode = this.scrollNode
       const rect = _scrollNode.getBoundingClientRect()
       const rootReact = this.rootEl ? this.rootNode.getBoundingClientRect() : null
       const rootHeight = !rootReact ? this.rootNode.innerHeight : (rootReact.height + rootReact.top)
       const distance = rootHeight - rect.bottom // 计算距离
-      this.isShow = distance < 0 && rect.top < rootHeight
+      !this.rootEl && console.log(rootHeight - rect.top > 0, distance < 0)
+      if (this.rootEl) this.isShow = distance < 0 && rect.top < rootHeight
+      else this.isShow = rootHeight - rect.top > 0 && distance < 0
     },
     initResize () {
       this.$nextTick(() => {
@@ -104,6 +106,7 @@ export default {
     initValue () {
       const _scrollNode = this.scrollNode
       const _dScrollNode = this.$refs.dScrollRef
+      if (!_dScrollNode) return
       // 原滚动条的 滚动宽 与 实际宽 比例
       const _proportion = _scrollNode.offsetWidth / _scrollNode.scrollWidth
       this.proportion = _proportion // 保存起比例

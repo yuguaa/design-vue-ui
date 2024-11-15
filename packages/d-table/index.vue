@@ -1,6 +1,6 @@
 <template>
   <!-- 全局table-带查询 -->
-  <div class="xm_global_table">
+  <div class="xm_global_table" ref="tableRef">
     <!-- 表格 -->
     <div class="table-wrap">
       <div class="header-wrap">
@@ -79,20 +79,7 @@
 
       </a-table>
     </div>
-    <!-- 分页 -->
-    <div class="xm_table_pagination" v-if="showPag">
-      <a-pagination
-        show-quick-jumper
-        show-size-changer
-        :show-total="(total) => `共 ${total} 条`"
-        :total="autoPag ? $attrs.dataSource.length : total"
-        :current="resultPag.page"
-        :pageSize="resultPag.page_size"
-        @showSizeChange="changeSize"
-        @change="changeSize"
-      />
-    </div>
-    <scroll-bar :scrollNodeQuery="scrollNodeQuery" v-if="sticky" fixed/>
+    <scroll-bar v-if="sticky" :scrollNodeEl="barEl"/>
   </div>
 </template>
 
@@ -101,7 +88,7 @@ import DTooltip from '../d-tooltip/index.vue'
 import TableSet from './set.vue'
 import ScrollBar from './scroll-bar.vue'
 import props from './config/prop'
-import { Table, Pagination, Badge } from 'ant-design-vue'
+import { Table, Badge } from 'ant-design-vue'
 const BadgeStatus = {
   1: 'success',
   0: 'error',
@@ -121,7 +108,6 @@ export default {
     TableSet,
     DTooltip,
     ATable: Table,
-    APagination: Pagination,
     ABadge: Badge,
     ScrollBar
   },
@@ -130,7 +116,8 @@ export default {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
-      columnsCopy: []
+      columnsCopy: [],
+      barEl: null
     }
   },
   created () {
@@ -138,6 +125,7 @@ export default {
     this.getSlots(this.columns)
   },
   mounted () {
+    this.findFirstBox()
     this.initScopedSlots()
   },
   filters: {
@@ -166,6 +154,10 @@ export default {
     }
   },
   methods: {
+    findFirstBox () {
+      const container = this.$refs.tableRef
+      this.barEl = container.querySelector('.ant-table-body')
+    },
     initScopedSlots () {
       // 获取 外面组件的slot集合
       const _scopedSlots = this.$scopedSlots

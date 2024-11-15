@@ -3,7 +3,6 @@
     <d-table
       :columns="columns"
       :dataSource="dataSource"
-      :total="dataSource.length"
     >
     </d-table>
     <div style="display: flex">
@@ -30,7 +29,6 @@
           :columns="columns"
           :dataSource="dataSource"
           @setColumns="setColumns"
-          :showPag="false"
           sticky
           rowKey="key"
           :scroll="{ x: 800 }"
@@ -91,7 +89,7 @@ export default {
   },
   created () {
     const dataSource = []
-    for (let index = 0; index < 20; index++) {
+    for (let index = 0; index < 17; index++) {
       dataSource.push({
         key: index,
         name: 'Jim Green',
