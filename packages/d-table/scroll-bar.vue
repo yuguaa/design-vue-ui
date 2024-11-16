@@ -76,13 +76,10 @@ export default {
     },
     // 处理 竖 划定监听  自定义滑动什么时候显示 什么时候隐藏
     bodyScroll () {
-      console.log('dd')
       const _scrollNode = this.scrollNode
       const rect = _scrollNode.getBoundingClientRect()
       const rootReact = this.rootEl ? this.rootNode.getBoundingClientRect() : null
       const rootHeight = !rootReact ? this.rootNode.innerHeight : (rootReact.height + rootReact.top)
-      const distance = rootHeight - rect.bottom // 计算距离
-      !this.rootEl && console.log(rootHeight - rect.top > 0, distance < 0)
       this.isShow = rootHeight < rect.bottom && rect.top < rootHeight
     },
     initResize () {
