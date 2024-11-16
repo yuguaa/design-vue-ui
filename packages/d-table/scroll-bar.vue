@@ -83,8 +83,7 @@ export default {
       const rootHeight = !rootReact ? this.rootNode.innerHeight : (rootReact.height + rootReact.top)
       const distance = rootHeight - rect.bottom // 计算距离
       !this.rootEl && console.log(rootHeight - rect.top > 0, distance < 0)
-      if (this.rootEl) this.isShow = distance < 0 && rect.top < rootHeight
-      else this.isShow = rootHeight - rect.top > 0 && distance < 0
+      this.isShow = rootHeight < rect.bottom && rect.top < rootHeight
     },
     initResize () {
       this.$nextTick(() => {
