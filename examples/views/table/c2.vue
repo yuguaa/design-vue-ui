@@ -1,11 +1,6 @@
 <template>
-  <div>
-    <d-table
-      :columns="columns"
-      :dataSource="dataSource"
-    >
-    </d-table>
-    <div style="display: flex">
+     <div>
+          <div style="display: flex">
       <div style="position: relative; width: 400px">
         <div
           class="demo1"
@@ -19,6 +14,13 @@
           >
             <a slot="name" slot-scope="text">{{ text }}</a>
             <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
+              <template slot="footer" slot-scope="currentPageData">
+      Footer
+      {{currentPageData}}
+    </template>
+    <template slot="nnnn" slot-scope="text">
+      {{text}}213
+    </template>
           </a-table>
         </div>
         <DScrollBar scrollNodeEl=".demo1 .ant-table-body" rootEl=".demo1" />
@@ -48,7 +50,7 @@
         <div style="height: 500px"></div>
       </div>
     </div>
-  </div>
+     </div>
 </template>
 <script>
 export default {
@@ -58,6 +60,7 @@ export default {
         dataIndex: 'name',
         key: 'name',
         slots: { title: 'customTitle' },
+        // customRender: 'name'
         scopedSlots: { customRender: 'name' }
       },
       {
@@ -66,9 +69,10 @@ export default {
         key: 'age'
       },
       {
-        title: 'Address',
+        title: 'Long Column Long Column Long Column',
         dataIndex: 'address',
-        key: 'address'
+        key: 'address',
+        ellipsis: true
       },
       {
         title: 'Tags',
@@ -103,6 +107,12 @@ export default {
   methods: {
     setColumns (value) {
       this.columns = value
+    },
+    handleTableChange (pagination, filters, sorter) {
+      console.log(pagination)
+    },
+    changeSize (page, pageSize) {
+      console.log(page, pageSize)
     }
   }
 }

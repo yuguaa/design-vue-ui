@@ -21,7 +21,7 @@ export const routes = [
   {
     path: '/table',
     name: 'table',
-    component: () => import('../views/table'),
+    component: () => import('../views/table/index.vue'),
     meta: {
       title: 'table'
     }

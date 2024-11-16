@@ -62,15 +62,15 @@
           />
         </template>
         <template
-          v-for="item in scopedSlots.filter((v) => v.type === 'customRender')"
+          v-for="item in scopedSlots.filter((v) => v.islot)"
           :slot="item.key"
-          slot-scope="text, record, index"
+          slot-scope="text, record, index, expanded"
         >
-          <slot :name="item.key" :text="text" :record="record" :index="index">
+          <slot :name="item.key"  v-bind="slotFilter( [text, record, index, expanded], item)">
           </slot>
         </template>
         <template
-          v-for="item in scopedSlots.filter((v) => v.type !== 'customRender')"
+          v-for="item in scopedSlots.filter((v) => !v.islot)"
           :slot="item.key"
         >
           <slot :name="item.key">
@@ -154,6 +154,26 @@ export default {
     }
   },
   methods: {
+    slotFilter (val, item) {
+      const _slotProps = {
+        expandedRowRender: 'record,index,indent,expanded',
+        expandIcon: 'props',
+        footer: 'currentPageData',
+        title: 'currentPageData',
+        filterIcon: 'filtered,column',
+        customRender: 'text,record,index',
+        filterDropdown: 'a'
+      }
+      const _currentSlotScope = _slotProps[item.type || item.key]?.split(',') || []
+      console.log(item, _currentSlotScope)
+      if (_currentSlotScope.length === 1) return val[0]
+      const _obj = {}
+      _currentSlotScope.forEach((v, index) => {
+        _obj[v] = val[index]
+      })
+      console.log(_obj)
+      return _obj
+    },
     findFirstBox () {
       const container = this.$refs.tableRef
       this.barEl = container.querySelector('.ant-table-body')
@@ -161,12 +181,16 @@ export default {
     initScopedSlots () {
       // 获取 外面组件的slot集合
       const _scopedSlots = this.$scopedSlots
-      // console.log(this, this.$slots, this.$refs.tableRef)
+
+      const _slotKeys = Object.keys(this.$slots)
+      console.log(_scopedSlots)
       for (const key in _scopedSlots) {
         if (Object.prototype.hasOwnProperty.call(_scopedSlots, key)) {
+          const _type = this.getScopedSlotsType(key)
           this.scopedSlots.push({
             key: key,
-            type: this.getScopedSlotsType(key)
+            type: _type,
+            islot: _slotKeys.indexOf(key)
           })
         }
       }
@@ -194,6 +218,7 @@ export default {
         const isExist = _cRender.some((q) => v.scopedSlots?.customRender.indexOf(q) !== -1)
         return v.scopedSlots?.customRender && isExist
       })
+      console.log(val, this.tableSlots)
     },
     initColumns () {
       // 处理 tip status
@@ -207,8 +232,8 @@ export default {
     },
     // 页码改变
     changeSize (current, pageSize) {
-      this.pagination.current = current
-      this.pagination.pageSize = pageSize
+      // this.pagination.current = current
+      // this.pagination.pageSize = pageSize
       this.$nextTick(() => {
         this.$emit('changeSize', current, pageSize)
       })
