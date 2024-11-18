@@ -11,8 +11,6 @@
     </d-table>
     <c1Vue/>
     <c2Vue/>
-    <h2>scroll-bar 滑动</h2>
-
   </div>
 </template>
 <script>

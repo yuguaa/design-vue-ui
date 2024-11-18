@@ -1,6 +1,7 @@
 <template>
-     <div>
-          <div style="display: flex">
+  <div>
+    <h2>scroll-bar 滑动</h2>
+    <div style="display: flex">
       <div style="position: relative; width: 400px">
         <div
           class="demo1"
@@ -14,13 +15,11 @@
           >
             <a slot="name" slot-scope="text">{{ text }}</a>
             <span slot="customTitle"><a-icon type="smile-o" /> Name</span>
-              <template slot="footer" slot-scope="currentPageData">
-      Footer
-      {{currentPageData}}
-    </template>
-    <template slot="nnnn" slot-scope="text">
-      {{text}}213
-    </template>
+            <template slot="footer" slot-scope="currentPageData">
+              Footer
+              {{ currentPageData }}
+            </template>
+            <template slot="nnnn" slot-scope="text"> {{ text }}213 </template>
           </a-table>
         </div>
         <DScrollBar scrollNodeEl=".demo1 .ant-table-body" rootEl=".demo1" />
@@ -50,7 +49,7 @@
         <div style="height: 500px"></div>
       </div>
     </div>
-     </div>
+  </div>
 </template>
 <script>
 export default {
