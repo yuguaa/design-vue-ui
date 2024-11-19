@@ -14,7 +14,11 @@ export default {
           bind: {
             placeholder: '请输入',
             allowClear: false
-            // disabled: true
+          },
+          on: {
+            change: (e) => {
+              console.log(e.target.value)
+            }
           }
         },
         {
@@ -33,6 +37,18 @@ export default {
           bind: {
             placeholder: '请选择',
             options: allRegion,
+            fieldNames: { label: 'name', value: 'code', children: 'areaList' }
+          }
+        },
+        {
+          label: 'mSelect',
+          param: 'mSelect',
+          type: 'mSelect',
+          bind: {
+            placeholder: '请选择',
+            options: allRegion,
+            maxLevel: 3,
+            defaultLevel: 3,
             fieldNames: { label: 'name', value: 'code', children: 'areaList' }
           }
         },

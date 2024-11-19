@@ -21,17 +21,19 @@
             :class="item.class"
             :rules="item.rules"
           >
-            <component
-              :is="compObj[item.type]"
-              v-model.trim="form[item.param]"
-              v-bind="searchBind(item.bind)"
-            />
             <slot
               name="search_item"
               v-if="item.type === 'custom'"
               :item="item"
               :form="form"
             ></slot>
+            <component
+              v-else
+              :is="compObj[item.type]"
+              v-model.trim="form[item.param]"
+              v-bind="searchBind(item.bind)"
+              v-on="item.on"
+            />
           </a-form-model-item>
         </a-col>
         <a-col>
