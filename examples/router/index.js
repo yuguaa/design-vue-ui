@@ -73,6 +73,14 @@ export const routes = [
     meta: {
       title: 'date-picker 日期选择器'
     }
+  },
+  {
+    path: '/search',
+    name: 'search',
+    component: () => import('../views/search/index.vue'),
+    meta: {
+      title: 'search 自定义搜索'
+    }
   }
 ]
 

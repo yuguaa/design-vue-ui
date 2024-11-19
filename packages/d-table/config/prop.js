@@ -43,5 +43,10 @@ export default {
   sticky: {
     type: Boolean,
     default: false
+  },
+  // sroll-bar sticky 为 true 时可设置
+  rootEl: {
+    type: [String, Object],
+    default: ''
   }
 }

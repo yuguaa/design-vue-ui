@@ -79,7 +79,7 @@
 
       </a-table>
     </div>
-    <scroll-bar v-if="sticky" :scrollNodeEl="barEl"/>
+    <scroll-bar v-if="sticky" :scrollNodeEl="barEl" :rootEl="rootEl"/>
   </div>
 </template>
 
