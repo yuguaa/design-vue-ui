@@ -33,7 +33,11 @@
               v-model.trim="form[item.param]"
               v-bind="searchBind(item.bind)"
               v-on="item.on"
-            />
+            >
+            <template v-if="item.customRender">
+              {{ item.customRender(item.options) }}
+            </template>
+            </component>
           </a-form-model-item>
         </a-col>
         <a-col>
@@ -70,6 +74,8 @@
   </div>
 </template>
 <script>
+import dConfig from '../_utils/dConfig'
+import { deepMerge } from '../_utils/index'
 export default {
   name: 'DSearch',
   props: {
@@ -83,7 +89,7 @@ export default {
     }
   },
   data () {
-    const searchConfig = this.$xmConfig.$dConfig.searchConfig
+    const searchConfig = deepMerge(dConfig.searchConfig, this.$xmConfig.$dConfig.searchConfig)
     return {
       form: {},
       searchConfig,

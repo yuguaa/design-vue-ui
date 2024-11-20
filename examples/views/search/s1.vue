@@ -51,6 +51,9 @@ export default {
             defaultLevel: 3,
             fieldNames: { label: 'name', value: 'code', children: 'areaList' }
           }
+          // customRender: () => {
+          //   return <h1></h1>
+          // }
         },
         {
           label: '状态',

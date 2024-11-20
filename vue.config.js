@@ -22,13 +22,13 @@ if (isProd) {
 
 module.exports = {
   // lintOnSave: false,
-  pages: {
-    index: {
-      entry: 'examples/main.js',
-      template: 'public/index.html',
-      filename: 'index.html'
-    }
-  },
+  // pages: {
+  //   index: {
+  //     entry: 'examples/main.js',
+  //     template: 'public/index.html',
+  //     filename: 'index.html'
+  //   }
+  // },
   css: {
     loaderOptions: {
       less: {
