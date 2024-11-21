@@ -50,13 +50,18 @@ export default {
             maxLevel: 3,
             defaultLevel: 3,
             fieldNames: { label: 'name', value: 'code', children: 'areaList' }
-          }
+          },
+          api: {
+            url: '/sda/apigetiuo',
+            methods: 'get'
+          },
         },
         {
           label: '状态',
           param: 'status',
           type: 'select',
           bind: {
+            
             placeholder: '请选择',
             options: [
               {
