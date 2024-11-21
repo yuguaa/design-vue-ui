@@ -76,9 +76,6 @@ export default {
           type: 'radio',
           bind: {
             placeholder: '请选择'
-          },
-          customRender: () => {
-            return 234
           }
         }
       ]
