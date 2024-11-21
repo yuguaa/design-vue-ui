@@ -51,9 +51,6 @@ export default {
             defaultLevel: 3,
             fieldNames: { label: 'name', value: 'code', children: 'areaList' }
           }
-          // customRender: () => {
-          //   return <h1></h1>
-          // }
         },
         {
           label: '状态',
@@ -61,14 +58,27 @@ export default {
           type: 'select',
           bind: {
             placeholder: '请选择',
-            options: [{
-              label: '待处理',
-              value: '1'
-            },
-            {
-              label: '已请求',
-              value: '2'
-            }]
+            options: [
+              {
+                label: '待处理',
+                value: '1'
+              },
+              {
+                label: '已请求',
+                value: '2'
+              }
+            ]
+          }
+        },
+        {
+          label: 'radio',
+          param: 'radio',
+          type: 'radio',
+          bind: {
+            placeholder: '请选择'
+          },
+          customRender: () => {
+            return 234
           }
         }
       ]
