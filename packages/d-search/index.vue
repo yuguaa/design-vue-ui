@@ -76,8 +76,10 @@
 <script>
 import dConfig from '../_utils/dConfig'
 import { deepMerge } from '../_utils/index'
+import apiMixin from './apiMixin'
 export default {
   name: 'DSearch',
+  mixin: [apiMixin],
   props: {
     opts: {
       type: Array,
