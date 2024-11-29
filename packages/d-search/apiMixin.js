@@ -3,12 +3,8 @@
  * 后续处理相关方便
  */
 export default {
-    data () {
-        return {
-
-        }
-    },
-    methods: {
-        
-    }
+  data () {
+    return {}
+  },
+  methods: {}
 }
