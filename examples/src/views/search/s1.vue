@@ -52,6 +52,7 @@ export default {
             fieldNames: { label: "name", value: "code", children: "areaList" },
           },
           api: {
+            triggerValid: ["status1"],
             trigger: "click", // click | start | 
             formParams:  ['status1'], // 需要 form 中的哪些参数
             data: {
@@ -60,7 +61,7 @@ export default {
             url: "/demo/sad", // url地址
             method: "get", // 方法
             header: {}, // 头部header
-            resultParams: ['res', 'data', 'list'] // 取接口数据的反参
+            resultParams: ['data', 'list'] // 取接口数据的反参
           },
         },
         {
