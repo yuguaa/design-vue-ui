@@ -1,5 +1,11 @@
 <template>
-  <d-search :opts="opts"></d-search>
+  <d-search>
+    <a>1</a>
+    <a label="sadsa">2</a>
+    <p>Item 1</p>
+    <p>Item 2</p>
+    <p>Item 3</p>
+  </d-search>
 </template>
 <script>
 import allRegion from '../../json/allRegion.json'
