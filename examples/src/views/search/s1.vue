@@ -1,10 +1,15 @@
 <template>
-  <d-search>
-    <a>1</a>
-    <a label="sadsa">2</a>
-    <p>Item 1</p>
-    <p>Item 2</p>
-    <p>Item 3</p>
+  <d-search :opts="opts">
+    <a-form-model-item label="用户名">
+      <a-input v-model="formInline.user" placeholder="Username">
+        <a-icon slot="prefix" type="user" style="color:rgba(0,0,0,.25)" />
+      </a-input>
+    </a-form-model-item>
+    <a-form-model-item label="用户名">
+      <a-input v-model="formInline.user" placeholder="Username">
+        <a-icon slot="prefix" type="user" style="color:rgba(0,0,0,.25)" />
+      </a-input>
+    </a-form-model-item>
   </d-search>
 </template>
 <script>
@@ -12,6 +17,7 @@ import allRegion from '../../json/allRegion.json'
 export default {
   data() {
     return {
+      formInline: {},
       opts: [
         {
           label: '账号',

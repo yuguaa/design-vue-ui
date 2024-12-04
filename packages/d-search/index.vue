@@ -1,83 +1,83 @@
+<template>
+  <a-form-model layout="inline" :model="model" class="d-search-form"
+    ref="formRef">
+    <slot></slot>
+    <a-form-model-item v-if="showBtn">
+      <a-space :size="spaceSize">
+        <a-button type="primary" @click="handleSubmit" :loading="loading">
+        <a-icon :type="searchIcon" v-if="searchIcon"></a-icon>
+        搜索
+      </a-button>
+      <a-button type="reset" style="margin-left: 10px" @click="reset"> 重置 </a-button>
+      <slot name="btn"></slot>
+      </a-space>
+    </a-form-model-item>
+  </a-form-model>
+</template>
 <script>
-
-import { deepMerge } from '../_utils/index'
-import dConfig from '../_utils/dConfig'
-
 export default {
-  name: 'DSearch',
+  name: 'd-search',
   props: {
+    model: {
+      type: Object,
+      default: () => {
+        return {}
+      }
+    },
     showBtn: {
       type: Boolean,
-      default: false
+      default: true
+    },
+    searchIcon: {
+      type: String,
+      default: ''
     },
     loading: {
       type: Boolean,
       default: false
+    },
+    spaceSize: {
+      type: Number,
+      default: 8
     }
   },
   data () {
-    const searchConfig = deepMerge(dConfig.searchConfig, this.$xmConfig.$dConfig.searchConfig)
     return {
-      form: {},
-      searchConfig,
-      col: searchConfig.searchCol,
-      btnObj: searchConfig.btn,
-      compObj: searchConfig.comps
     }
   },
-  mounted () {
-    console.log(this.$slots.default)
-  },
   methods: {
-    searchBind (customBind) {
-      return { ...(this.searchConfig.searchBind || {}), ...(customBind || {}) }
+    handleSubmit (e) {
+      this.$emit('ok')
     },
-    handleSubmit () { }
-  },
-  render (h) {
-    return (
-      <div class="xm_search">
-        <a-form-model class="xm_search_form" ref="ruleForm" model={this.form} layout="inline">
-          <a-row gutter={36} type="flex">
-            {this.$slots.default &&
-              this.$slots.default.map((node, index) => (
-                <a-col {...(node.col || this.col)} key={index}>
-                  <a-form-model-item labelCol={node.labelCol || {}} wrapperCol={{ flex: 1 }}>
-                    {node}
-                  </a-form-model-item>
-                </a-col>
-              ))}
-            {this.showBtn && (
-              <a-col>
-                <a-form-model-item>
-                  {this.btnObj.search.show && (
-                    <a-button
-                      type={this.btnObj.search.type}
-                      onClick={() => this.handleSubmit()}
-                      loading={this.loading}
-                    >
-                      {this.btnObj.search.icon && <a-icon type={this.btnObj.search.icon} />}
-                      {this.btnObj.search.text}
-                    </a-button>
-                  )}
-                  {this.btnObj.reset.show && (
-                    <a-button
-                      type={this.btnObj.reset.type}
-                      style="margin-left: 10px"
-                      onClick={() => this.handleSubmit(true)}
-                    >
-                      {this.btnObj.reset.icon && <a-icon type={this.btnObj.reset.icon} />}
-                      {this.btnObj.reset.text}
-                    </a-button>
-                  )}
-                  {this.$slots.search_btn && <slot name="search_btn" form={this.form}></slot>}
-                </a-form-model-item>
-              </a-col>
-            )}
-          </a-row>
-        </a-form-model>
-      </div>
-    )
+    reset () {
+      this.$refs.formRef.resetFields()
+      this.$emit('reset')
+    }
   }
 }
 </script>
+<style lang="less">
+.d-search-form {
+  display: grid;
+  // flex-wrap: wrap;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  /* 三列，每列最小200px，最大宽度自适应 */
+  gap: 24px;
+
+  .ant-form-item {
+    // flex: 1;
+    // min-width: 300px;
+    display: flex !important;
+    margin: 0;
+
+    .ant-form-item-label {
+      // padding-left: 24px;
+      // text-align: right;
+    }
+
+    .ant-form-item-control-wrapper {
+      flex: 1 // width: 100%;
+    }
+  }
+}
+</style>
