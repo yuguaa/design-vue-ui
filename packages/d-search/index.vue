@@ -6,9 +6,9 @@
       <a-space :size="spaceSize">
         <a-button type="primary" @click="handleSubmit" :loading="loading">
         <a-icon :type="searchIcon" v-if="searchIcon"></a-icon>
-        搜索
+        {{searchTxt}}
       </a-button>
-      <a-button type="reset" style="margin-left: 10px" @click="reset"> 重置 </a-button>
+      <a-button type="reset" style="margin-left: 10px" @click="reset"> {{resetTxt}} </a-button>
       <slot name="btn"></slot>
       </a-space>
     </a-form-model-item>
@@ -39,6 +39,14 @@ export default {
     spaceSize: {
       type: Number,
       default: 8
+    },
+    searchTxt: {
+      type: String,
+      default: '搜索'
+    },
+    resetTxt: {
+      type: String,
+      default: '重置'
     }
   },
   data () {
