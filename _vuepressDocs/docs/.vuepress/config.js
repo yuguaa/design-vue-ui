@@ -53,7 +53,8 @@ module.exports = {
             "select",
             "cascader",
             "multiple-select",
-            "table"
+            "table",
+            "search"
           ],
         },
         "update",

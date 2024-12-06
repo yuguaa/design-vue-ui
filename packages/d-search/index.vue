@@ -1,6 +1,6 @@
 <template>
-  <a-form-model layout="inline" :model="model" class="d-search-form"
-    ref="formRef">
+  <a-form-model layout="inline" class="d-search-form"
+    ref="formRef" v-bind="$attrs">
     <slot></slot>
     <a-form-model-item v-if="showBtn">
       <a-space :size="spaceSize">
@@ -26,12 +26,6 @@ export default {
     AIcon: Icon
   },
   props: {
-    model: {
-      type: Object,
-      default: () => {
-        return {}
-      }
-    },
     showBtn: {
       type: Boolean,
       default: true

@@ -11,9 +11,23 @@ export default {
     return {
       dataSource: [
       {
-          prop: "columns",
-          description: "表格列的配置描述(具体项见下表)",
-          type: "array",
+          prop: "showTableSet",
+          description: "是否显示列设置",
+          type: "boolean",
+          default: "true",
+          version: "-",
+        },
+        {
+          prop: "isCache",
+          description: "是否需要缓存",
+          type: "boolean",
+          default: "false",
+          version: "-",
+        },
+        {
+          prop: "suffix",
+          description: " 一个页面多个列表的时候 需要缓存的时候很有必要",
+          type: "string",
           default: "-",
           version: "-",
         },
