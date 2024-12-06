@@ -32,7 +32,10 @@ export default {
   pagination: {
     type: Object,
     default: () => {
-      return {}
+      return {
+        current: 1,
+        pageSize: 10
+      }
     }
   },
   // 滚动的节点

@@ -17,13 +17,25 @@
 <design-vue-ui-table-index />
 
 :::slot content
-支持大多数 `a-table` 的 `API` 属性，
+支持大多数 `a-table` 的 `API` 属性，sticky 不生效，请检查父容器是否存在宽度或overflow等使  position: sticky; 不生效
 
 常规功能大多支持
 :::
 
 ::: slot sourceCode
 <<< @/docs/.vuepress/components/design-vue-ui/table/index.vue
+:::
+
+</tag>
+<tag text="支撑的几个常用 customRender">
+<design-vue-ui-table-basic-props />
+
+:::slot content
+c-tip / c-badge / c-index
+:::
+
+::: slot sourceCode
+<<< @/docs/.vuepress/components/design-vue-ui/table/basic-props.vue
 :::
 
 </tag>

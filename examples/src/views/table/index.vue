@@ -23,6 +23,12 @@ export default {
   },
   data () {
     const columns = [
+    {
+    title: '序号',
+    dataIndex: 'index',
+    width: '100px',
+    scopedSlots: { customRender: 'c-index' },
+  },
       {
         dataIndex: 'name',
         key: 'name',

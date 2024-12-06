@@ -31,10 +31,10 @@
         }"
         v-bind="$attrs"
         v-on="filteredListeners"
-        ref="tableRef"
+        ref="atableRef"
       >
         <span slot="c-index" slot-scope="text, record, index">
-          {{ index | indexFilter(resultPag) }}
+          {{ index | indexFilter(pagination) }}
         </span>
         <template
           v-for="column in tableSlots"
@@ -130,7 +130,6 @@ export default {
   },
   filters: {
     valueFilter (val, emptyTxt) {
-      // console.log(val, !val && val !== 0, emptyTxt)
       if (!val && val !== 0) return emptyTxt
       return val
     },
@@ -165,13 +164,11 @@ export default {
         filterDropdown: 'a'
       }
       const _currentSlotScope = _slotProps[item.type || item.key]?.split(',') || []
-      console.log(item, _currentSlotScope)
       if (_currentSlotScope.length === 1) return val[0]
       const _obj = {}
       _currentSlotScope.forEach((v, index) => {
         _obj[v] = val[index]
       })
-      console.log(_obj)
       return _obj
     },
     findFirstBox () {
@@ -183,7 +180,6 @@ export default {
       const _scopedSlots = this.$scopedSlots
 
       const _slotKeys = Object.keys(this.$slots)
-      console.log(_scopedSlots)
       for (const key in _scopedSlots) {
         if (Object.prototype.hasOwnProperty.call(_scopedSlots, key)) {
           const _type = this.getScopedSlotsType(key)
@@ -218,7 +214,6 @@ export default {
         const isExist = _cRender.some((q) => v.scopedSlots?.customRender.indexOf(q) !== -1)
         return v.scopedSlots?.customRender && isExist
       })
-      console.log(val, this.tableSlots)
     },
     initColumns () {
       // 处理 tip status
@@ -232,8 +227,8 @@ export default {
     },
     // 页码改变
     changeSize (current, pageSize) {
-      // this.pagination.current = current
-      // this.pagination.pageSize = pageSize
+      this.pagination.current = current
+      this.pagination.pageSize = pageSize
       this.$nextTick(() => {
         this.$emit('changeSize', current, pageSize)
       })

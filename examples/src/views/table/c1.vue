@@ -63,10 +63,16 @@ const data = [
 ]
 
 export default {
-  data () {
+  data() {
     return {
       data,
       columns: [
+        {
+          title: '序号',
+          dataIndex: 'index',
+          width: '100px',
+          scopedSlots: { customRender: 'c-index' },
+        },
         {
           title: 'Name',
           dataIndex: 'name'
