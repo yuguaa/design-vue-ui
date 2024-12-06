@@ -15,12 +15,12 @@
   </a-form-model>
 </template>
 <script>
-import { FormModel, FormModelItem, Space, Button, Icon } from 'ant-design-vue'
+import { FormModel, Space, Button, Icon } from 'ant-design-vue'
 export default {
   name: 'd-search',
   components: {
     AFormModel: FormModel,
-    AFormModelItem: FormModelItem,
+    AFormModelItem: FormModel.Item,
     ASpace: Space,
     AButton: Button,
     AIcon: Icon
