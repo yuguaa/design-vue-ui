@@ -1,6 +1,6 @@
 {
   "name": "design-vue-ui",
-  "version": "1.0.9",
+  "version": "1.0.10",
   "private": false,
   "main": "lib/design-vue-ui.umd.min.js",
   "license": "MIT",
@@ -9,9 +9,8 @@
   ],
   "scripts": {
     "serve": "vue-cli-service serve",
-    "build": "vue-cli-service build",
     "lint": "vue-cli-service lint",
-    "lib": "vue-cli-service build --target lib --dest lib  packages/index.js && node scripts/pbLess.js",
+    "build": "vue-cli-service build --target lib --dest lib  packages/index.js && node scripts/pbLess.js",
     "patch": "patch-package"
   },
   "dependencies": {

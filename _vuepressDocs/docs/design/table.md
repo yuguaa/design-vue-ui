@@ -17,9 +17,7 @@
 <design-vue-ui-table-index />
 
 :::slot content
-支持大多数 `a-select` 的 `API` 属性，
-
-mode 为 tags 并 手动输入添加的 未支持
+支持大多数 `a-table` 的 `API` 属性，
 
 常规功能大多支持
 :::

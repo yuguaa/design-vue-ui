@@ -13,7 +13,7 @@
       :showPag="false"
       sticky
       rowKey="key"
-      :scroll="{ x: 800 }"
+      :scroll="{ x: 1800 }"
     >
     </d-table>
   </div>
