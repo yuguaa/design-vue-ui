@@ -19,7 +19,6 @@
       </div>
       <a-table
         :columns="columns"
-        :rowKey="rowKey"
         :transformCellText="({ text }) => (!text && text !== 0 ? '--' : text)"
         :pagination="!pagination ? false : {
           'show-total': (total) => `共 ${total} 条`,
@@ -148,7 +147,7 @@ export default {
   },
   computed: {
     filteredListeners () {
-      const { changeSize, onSelectChange, setColumns, ...otherEvents } = this.$listeners
+      const { changeSize, setColumns, ...otherEvents } = this.$listeners
       return otherEvents
     }
   },
@@ -232,11 +231,6 @@ export default {
       this.$nextTick(() => {
         this.$emit('changeSize', current, pageSize)
       })
-    },
-    // 切换table多选
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.$emit('onSelectChange', selectedRowKeys)
     }
   }
 }

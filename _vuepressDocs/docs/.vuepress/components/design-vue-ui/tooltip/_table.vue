@@ -21,7 +21,7 @@ export default {
           prop: "len",
           description: "显示的长度",
           type: "number",
-          default: "30	",
+          default: "9	",
           version: "-",
         },
         {

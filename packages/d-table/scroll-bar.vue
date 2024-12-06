@@ -20,7 +20,7 @@ export default {
     },
     // 对应于哪一个节点元素进行显示和隐藏，默认 html 滑动到
     rootEl: {
-      type: [String, Object],
+      type: [String, Element],
       default: ''
     }
   },
