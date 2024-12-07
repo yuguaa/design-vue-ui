@@ -1,15 +1,14 @@
 <template>
-  <a-form-model layout="inline" class="d-search-form"
-    ref="formRef" v-bind="$attrs">
+  <a-form-model layout="inline" class="d-search-form" ref="formRef" v-bind="$attrs">
     <slot></slot>
     <a-form-model-item v-if="showBtn">
       <a-space :size="spaceSize">
         <a-button type="primary" @click="handleSubmit" :loading="loading">
-        <a-icon :type="searchIcon" v-if="searchIcon"></a-icon>
-        {{searchTxt}}
-      </a-button>
-      <a-button type="reset" style="margin-left: 10px" @click="reset"> {{resetTxt}} </a-button>
-      <slot name="btn"></slot>
+          <a-icon :type="searchIcon" v-if="searchIcon"></a-icon>
+          {{ searchTxt }}
+        </a-button>
+        <a-button type="reset" style="margin-left: 10px" @click="reset"> {{ resetTxt }} </a-button>
+        <slot name="btn"></slot>
       </a-space>
     </a-form-model-item>
   </a-form-model>
@@ -79,6 +78,9 @@ export default {
     // min-width: 300px;
     display: flex !important;
     margin: 0;
+    &.ant-form-item-with-help{
+      margin-bottom: 0;
+    }
 
     .ant-form-item-label {
       // padding-left: 24px;
@@ -86,7 +88,11 @@ export default {
     }
 
     .ant-form-item-control-wrapper {
-      flex: 1 // width: 100%;
+      flex: 1; // width: 100%;
+
+      .ant-form-explain {
+        position: absolute;
+      }
     }
   }
 }
