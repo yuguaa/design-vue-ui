@@ -1,5 +1,5 @@
 <template>
-  <d-search :model="formInline">
+  <d-search :model="formInline" :shrink="2">
     <a-form-model-item label="用户名">
       <a-input v-model="formInline.user" placeholder="请输入"></a-input>
     </a-form-model-item>
@@ -19,7 +19,7 @@
         </a-radio>
       </a-radio-group>
     </a-form-model-item>
-    <a-form-model-item label="Activity zone" prop="region">
+    <!-- <a-form-model-item label="Activity zone" prop="region">
       <a-select v-model="formInline.region" placeholder="please select your zone">
         <a-select-option value="shanghai">
           Zone one
@@ -28,7 +28,7 @@
           Zone two
         </a-select-option>
       </a-select>
-    </a-form-model-item>
+    </a-form-model-item> -->
     <a-form-model-item label="Activity time" required prop="date1">
       <a-date-picker
         v-model="formInline.date1"
