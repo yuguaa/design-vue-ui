@@ -1,6 +1,6 @@
 <template>
   <!-- 全局table-带查询 -->
-  <div class="xm_global_table">
+  <div class="xm_global_table" ref="tableRef">
     <!-- 表格 -->
     <div class="table-wrap">
       <div class="header-wrap">
@@ -19,14 +19,21 @@
       </div>
       <a-table
         :columns="columns"
-        :pagination="false"
-        :rowKey="rowKey"
         :transformCellText="({ text }) => (!text && text !== 0 ? '--' : text)"
+        :pagination="!pagination ? false : {
+          'show-total': (total) => `共 ${total} 条`,
+          'show-quick-jumper': true,
+          'show-size-changer': true,
+          'onShowSizeChange': changeSize,
+          'onChange': changeSize,
+          ...pagination
+        }"
         v-bind="$attrs"
-        ref="tableRef"
+        v-on="filteredListeners"
+        ref="atableRef"
       >
         <span slot="c-index" slot-scope="text, record, index">
-          {{ index | indexFilter(pag) }}
+          {{ index | indexFilter(pagination) }}
         </span>
         <template
           v-for="column in tableSlots"
@@ -54,15 +61,15 @@
           />
         </template>
         <template
-          v-for="item in scopedSlots.filter((v) => v.type === 'customRender')"
+          v-for="item in scopedSlots.filter((v) => v.islot)"
           :slot="item.key"
-          slot-scope="text, record, index"
+          slot-scope="text, record, index, expanded"
         >
-          <slot :name="item.key" :text="text" :record="record" :index="index">
+          <slot :name="item.key"  v-bind="slotFilter( [text, record, index, expanded], item)">
           </slot>
         </template>
         <template
-          v-for="item in scopedSlots.filter((v) => v.type !== 'customRender')"
+          v-for="item in scopedSlots.filter((v) => !v.islot)"
           :slot="item.key"
         >
           <slot :name="item.key">
@@ -71,27 +78,16 @@
 
       </a-table>
     </div>
-    <!-- 分页 -->
-    <div class="xm_table_pagination" v-if="showPag">
-      <a-pagination
-        show-quick-jumper
-        show-size-changer
-        :show-total="(total) => `共 ${total} 条`"
-        :total="pag.total"
-        :current="pag.page"
-        :pageSize="pag.page_size"
-        @showSizeChange="changeSize"
-        @change="changeSize"
-      />
-    </div>
+    <scroll-bar v-if="sticky" :scrollNodeEl="barEl" :rootEl="rootEl"/>
   </div>
 </template>
 
 <script>
 import DTooltip from '../d-tooltip/index.vue'
 import TableSet from './set.vue'
+import ScrollBar from './scroll-bar.vue'
 import props from './config/prop'
-import { Table, Pagination, Badge } from 'ant-design-vue'
+import { Table, Badge } from 'ant-design-vue'
 const BadgeStatus = {
   1: 'success',
   0: 'error',
@@ -111,15 +107,16 @@ export default {
     TableSet,
     DTooltip,
     ATable: Table,
-    APagination: Pagination,
-    ABadge: Badge
+    ABadge: Badge,
+    ScrollBar
   },
   data () {
     return {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
-      columnsCopy: []
+      columnsCopy: [],
+      barEl: null
     }
   },
   created () {
@@ -127,11 +124,11 @@ export default {
     this.getSlots(this.columns)
   },
   mounted () {
+    this.findFirstBox()
     this.initScopedSlots()
   },
   filters: {
     valueFilter (val, emptyTxt) {
-      // console.log(val, !val && val !== 0, emptyTxt)
       if (!val && val !== 0) return emptyTxt
       return val
     },
@@ -144,30 +141,58 @@ export default {
       return txtObj[val] || txtObj.default || val
     },
     indexFilter (index, pag) {
-      return pag.page > 1
-        ? index + 1 + (pag.page - 1) * pag.page_size
-        : index + 1
+      if (!pag) return index
+      return pag.current > 1 ? index + 1 + (pag.current - 1) * pag.pageSize : index + 1
     }
-
   },
-  updated () {},
+  computed: {
+    filteredListeners () {
+      const { changeSize, setColumns, ...otherEvents } = this.$listeners
+      return otherEvents
+    }
+  },
   methods: {
+    slotFilter (val, item) {
+      const _slotProps = {
+        expandedRowRender: 'record,index,indent,expanded',
+        expandIcon: 'props',
+        footer: 'currentPageData',
+        title: 'currentPageData',
+        filterIcon: 'filtered,column',
+        customRender: 'text,record,index',
+        filterDropdown: 'a'
+      }
+      const _currentSlotScope = _slotProps[item.type || item.key]?.split(',') || []
+      if (_currentSlotScope.length === 1) return val[0]
+      const _obj = {}
+      _currentSlotScope.forEach((v, index) => {
+        _obj[v] = val[index]
+      })
+      return _obj
+    },
+    findFirstBox () {
+      const container = this.$refs.tableRef
+      this.barEl = container.querySelector('.ant-table-body')
+    },
     initScopedSlots () {
       // 获取 外面组件的slot集合
       const _scopedSlots = this.$scopedSlots
-      // console.log(this, this.$slots, this.$refs.tableRef)
+
+      const _slotKeys = Object.keys(this.$slots)
       for (const key in _scopedSlots) {
         if (Object.prototype.hasOwnProperty.call(_scopedSlots, key)) {
+          const _type = this.getScopedSlotsType(key)
           this.scopedSlots.push({
             key: key,
-            type: this.getScopedSlotsType(key)
+            type: _type,
+            islot: _slotKeys.indexOf(key)
           })
         }
       }
     },
     getScopedSlotsType (key) {
       let _type = ''
-      this.columns.some(v => {
+      this.columns.some((v) => {
         const _slot = this.findKeyByValue(v.slots, key)
         const _scopeSlot = this.findKeyByValue(v.scopedSlots, key)
         _type = _slot || _scopeSlot
@@ -185,38 +210,27 @@ export default {
     getSlots (val) {
       const _cRender = ['c-tip', 'c-badge']
       this.tableSlots = val.filter((v) => {
-        const isExist = _cRender.some(q => v.scopedSlots?.customRender.indexOf(q) !== -1)
-        return (
-          v.scopedSlots?.customRender &&
-          isExist
-        )
+        const isExist = _cRender.some((q) => v.scopedSlots?.customRender.indexOf(q) !== -1)
+        return v.scopedSlots?.customRender && isExist
       })
     },
     initColumns () {
       // 处理 tip status
       const _cRender = ['c-tip', 'c-badge']
       this.columns.forEach((item, index) => {
-        if (
-          item.scopedSlots &&
-          _cRender.indexOf(item.scopedSlots?.customRender) !== -1
-        ) {
+        if (item.scopedSlots && _cRender.indexOf(item.scopedSlots?.customRender) !== -1) {
           item.scopedSlots.customRender = item.scopedSlots.customRender + index
         }
       })
       this.columnsCopy = [...this.columns]
     },
     // 页码改变
-    changeSize (page, pageSize) {
-      // this.pag.page = page
-      // this.pag.page_size = pageSize
+    changeSize (current, pageSize) {
+      this.pagination.current = current
+      this.pagination.pageSize = pageSize
       this.$nextTick(() => {
-        this.$emit('changeSize', page, pageSize)
+        this.$emit('changeSize', current, pageSize)
       })
-    },
-    // 切换table多选
-    onSelectChange (selectedRowKeys, selectedRows) {
-      this.selectedRowKeys = selectedRowKeys
-      this.$emit('onSelectChange', selectedRowKeys)
     }
   }
 }

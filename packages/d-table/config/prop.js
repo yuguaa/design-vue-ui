@@ -1,8 +1,4 @@
-export const defaultSlotConfig = {
-  tip: {
-    len: 12
-  }
-}
+
 export default {
   // 通用 列表设置 --- 自定义列表需要的属性
   columnSet: {
@@ -15,32 +11,31 @@ export default {
       }
     }
   },
-  isHideOnSinglePage: {
-    // 设置当前总数小于设置页数 是否显示分页
-    type: Boolean,
-    default: true
-  },
   columns: {
     type: Array,
     default: []
   },
-  rowKey: {
-    // 单个rowKey
-    type: String,
-    default: 'id'
-  },
-  pag: {
+  pagination: {
     type: Object,
     default: () => {
       return {
-        page: 1,
-        page_size: 10,
-        total: 0
+        current: 1,
+        pageSize: 10
       }
     }
   },
-  showPag: {
+  // 滚动的节点
+  scrollNodeQuery: {
+    type: [String, Object],
+    default: '.xm_global_table .ant-table-body'
+  },
+  sticky: {
     type: Boolean,
-    default: true
+    default: false
+  },
+  // sroll-bar sticky 为 true 时可设置
+  rootEl: {
+    type: [String, Object],
+    default: ''
   }
 }

@@ -51,3 +51,7 @@ function swapKeysAndValues (jsonObj) {
   }
   return swappedObj
 }
+
+export function exsitVal (variable) {
+  return variable !== undefined && variable !== null
+}

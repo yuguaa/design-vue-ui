@@ -10,23 +10,23 @@ export default {
   data() {
     return {
       dataSource: [
-        {
-          prop: "content",
-          description: "内容",
-          type: "string | array | number",
-          default: "-",
+      {
+          prop: "showTableSet",
+          description: "是否显示列设置",
+          type: "boolean",
+          default: "true",
           version: "-",
         },
         {
-          prop: "len",
-          description: "显示的长度",
-          type: "number",
-          default: "9	",
+          prop: "isCache",
+          description: "是否需要缓存",
+          type: "boolean",
+          default: "false",
           version: "-",
         },
         {
-          prop: "overlayClassName",
-          description: "卡片类名",
+          prop: "suffix",
+          description: " 一个页面多个列表的时候 需要缓存的时候很有必要",
           type: "string",
           default: "-",
           version: "-",

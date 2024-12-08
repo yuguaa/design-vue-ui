@@ -1,0 +1,67 @@
+{
+  "name": "example",
+  "version": "1.0.1",
+  "private": true,
+  "scripts": {
+    "serve": "vue-cli-service serve",
+    "build": "vue-cli-service build ",
+    "lint": "vue-cli-service lint",
+    "build:preview": "vue-cli-service build --mode preview",
+    "tag": "node ./git.js"
+  },
+  "dependencies": {
+    "ant-design-vue": "1.7.8",
+    "axios": "^0.21.1",
+    "babel-polyfill": "^6.26.0",
+    "clipboard": "^2.0.8",
+    "core-js": "^3.6.5",
+    "less": "3.0.4",
+    "less-loader": "5.0.0",
+    "echarts": "^5.3.2",
+    "moment": "^2.29.1",
+    "nprogress": "^0.2.0",
+    "vue": "^2.6.11",
+    "vue-cookies": "^1.7.4",
+    "vue-router": "^3.5.1",
+    "vuedraggable": "^2.24.3",
+    "@wangeditor/editor": "^5.0.1",
+    "vue-json-viewer": "^2.2.22",
+    "vuex": "^3.6.2",
+    "vuex-persistedstate": "^4.0.0-beta.3"
+  },
+  "devDependencies": {
+    "@ant-design/colors": "3.2.1",
+    "@vue/cli-plugin-babel": "~4.5.0",
+    "@vue/cli-plugin-eslint": "~4.5.0",
+    "@vue/cli-service": "~4.5.0",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "simple-git": "^2.31.0",
+    "eslint-plugin-vue": "^6.2.2",
+    "vue-template-compiler": "^2.6.11",
+    "webpack-theme-color-replacer": "1.2.17",
+    "eslint-plugin-import": "^2.20.2",
+    "eslint-plugin-node": "^11.1.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.0"
+  },
+  "eslintConfig": {
+    "root": true,
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "plugin:vue/essential",
+      "eslint:recommended"
+    ],
+    "parserOptions": {
+      "parser": "babel-eslint"
+    },
+    "rules": {}
+  },
+  "browserslist": [
+    "> 1%",
+    "last 2 versions",
+    "not ie <= 10"
+  ]
+}
