@@ -15,12 +15,12 @@ export default {
   props: {
     // 滚动的节点  可是 String 类型的 querySelector   或者 el
     scrollNodeEl: {
-      type: [String, Element],
+      type: [String, Object],
       default: '.xm_global_table .ant-table-body'
     },
     // 对应于哪一个节点元素进行显示和隐藏，默认 html 滑动到
     rootEl: {
-      type: [String, Element],
+      type: [String, Object],
       default: ''
     }
   },

@@ -6,6 +6,7 @@
       :dataSource="dataSource"
       @change="handleTableChange"
       @changeSize="changeSize"
+      @setColumns="setColumns"
     >
     <a slot="name" slot-scope="{text}">{{ text }}</a>
     </d-table>

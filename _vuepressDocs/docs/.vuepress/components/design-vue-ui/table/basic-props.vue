@@ -1,6 +1,6 @@
 <template>
   <div class="xm-main">
-    <d-table :columns="columns" :dataSource="dataSource" :total="dataSource.length">
+    <d-table :columns="columns" :dataSource="dataSource" :total="dataSource.length" @setColumns="setColumns">
       <template #operation>
         <a-space>
           <a-button type="link" block>禁用</a-button>
