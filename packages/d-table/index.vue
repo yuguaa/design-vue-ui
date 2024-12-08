@@ -48,13 +48,13 @@
           />
           <a-badge
             :key="column.dataIndex || column.key"
-            :status="text | statusFilter(column.scopedSlots.status)"
+            :status="text | statusFilter(column.scopedSlots.status, badgeStatus)"
             :text="
               column.scopedSlots.des
                 ? record[column.scopedSlots.des]
-                : text | txtFilter(column.scopedSlots.txt)
+                : text | txtFilter(column.scopedSlots.txt, badgetText)
             "
-            v-bind="column.scopedSlots.config || {}"
+            v-bind="{...badgeProps, ...(column.scopedSlots.config || {})}"
             v-else-if="
               column.scopedSlots.customRender.indexOf('c-badge') !== -1
             "
@@ -88,18 +88,10 @@ import TableSet from './set.vue'
 import ScrollBar from './scroll-bar.vue'
 import props from './config/prop'
 import { Table, Badge } from 'ant-design-vue'
-const BadgeStatus = {
-  1: 'success',
-  0: 'error',
-  default: 'error'
-}
+import dConfig from '../_utils/dConfig'
 
-const DefaultShowStatus = {
-  1: '已启用',
-  0: '已停用',
-  '-1': '已禁用',
-  default: '未知'
-}
+const BadgeStatus = dConfig.DTable.BadgeStatus
+const DefaultShowStatus = dConfig.DTable.BadgetText
 export default {
   name: 'DTable',
   props,
@@ -111,17 +103,22 @@ export default {
     ScrollBar
   },
   data () {
+    const { DTable = {} } = this.$xmConfig.$dConfig
     return {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
       columnsCopy: [],
+      badgeProps: DTable.BadgeProps || {},
+      badgeStatus: Object.assign({}, BadgeStatus, DTable.BadgeStatus),
+      badgetText: Object.assign({}, DefaultShowStatus, DTable.BadgetText),
       barEl: null
     }
   },
   created () {
     this.initColumns()
     this.getSlots(this.columns)
+    console.log(this.badgeStatus)
   },
   mounted () {
     this.findFirstBox()
@@ -132,12 +129,12 @@ export default {
       if (!val && val !== 0) return emptyTxt
       return val
     },
-    statusFilter (val, statusObj) {
-      if (!statusObj) return BadgeStatus[val] || BadgeStatus.default || ''
+    statusFilter (val, statusObj, status) {
+      if (!statusObj) return status[val] || status.default || ''
       return statusObj[val] || statusObj.default || ''
     },
-    txtFilter (val, txtObj) {
-      if (!txtObj) return DefaultShowStatus[val] || DefaultShowStatus.default
+    txtFilter (val, txtObj, dTxtObj) {
+      if (!txtObj) return dTxtObj[val] || dTxtObj.default
       return txtObj[val] || txtObj.default || val
     },
     indexFilter (index, pag) {

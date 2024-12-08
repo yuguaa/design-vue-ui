@@ -1,19 +1,17 @@
 export default {
-  searchConfig: {
-    searchCol: {
-      sm: 24,
-      md: 8,
-      lg: 8,
-      xl: 8,
-      xxl: 6
+  DTable: {
+    BadgeStatus: {
+      1: 'success',
+      0: 'warning',
+      default: 'error'
     },
-    comps: {
-      input: 'a-input',
-      select: 'd-select',
-      cascader: 'd-cascader',
-      mSelect: 'd-multiple-select',
-      number: 'd-input-number',
-      radio: 'a-radio-group'
+    BadgetText: {
+      1: '已启用',
+      0: '已停用',
+      '-1': '已禁用',
+      default: '未知1'
+    },
+    BadgeProps: {
     }
   }
 }
