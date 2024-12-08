@@ -26,7 +26,6 @@ export default {
   },
   // 滚动的节点
   scrollNodeQuery: {
-    type: [String, Object],
     default: '.xm_global_table .ant-table-body'
   },
   sticky: {
@@ -35,7 +34,6 @@ export default {
   },
   // sroll-bar sticky 为 true 时可设置
   rootEl: {
-    type: [String, Object],
     default: ''
   }
 }
