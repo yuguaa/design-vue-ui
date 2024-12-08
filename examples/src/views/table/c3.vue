@@ -33,7 +33,7 @@ const columns = [
     scopedSlots: {
       customRender: 'c-tip',
       // 对应 d-tooltip 的属性 ( content 除外)
-      config: {
+      bind: {
         len: 12, // 默认 9
       }
     },
@@ -41,13 +41,30 @@ const columns = [
   {
     title: '启用状态',
     dataIndex: 'status',
+    scopedSlots: {
+      customRender: 'c-status',
+      bindObj: {
+        color: (text) => {
+          const _obj = {
+              1: 'green',
+              0: 'gold',
+              default: 'volcano'
+            }
+            return _obj[text] || 'default'
+        }
+      }
+    },
+  },
+  {
+    title: '启用状态',
+    dataIndex: 'status111',
     scopedSlots: { customRender: 'c-badge' },
   },
   {
     title: '自定义状态',
     dataIndex: 'cusStatus',
-    scopedSlots: { 
-      customRender: 'c-badge',
+    scopedSlots: {
+      customRender: 'c-ddd',
       status: {
         1: 'processing',
         0: 'error',
@@ -58,7 +75,7 @@ const columns = [
         2: '已撤回',
         0: '失败'
       }
-     },
+    },
   },
   {
     title: '操作',
@@ -75,6 +92,7 @@ for (let i = 0; i < 24; i++) {
     age: 32,
     address: `中华人民共和国-四川省-巴拉巴拉市-巴拉巴拉去${i}`,
     status: i % 3,
+    status111: i % 3,
     cusStatus: i % 3,
   })
 }
