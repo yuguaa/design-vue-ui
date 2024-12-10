@@ -4,6 +4,7 @@
     :dataSource="dataSource"
     @setColumns="setColumns"
     :showPag="false"
+    :pagination="false"
     :scroll="!isMobile ? {} : { x: 800 }"
   ></d-table>
 </template>
