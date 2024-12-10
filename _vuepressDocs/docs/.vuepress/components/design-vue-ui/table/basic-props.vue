@@ -28,13 +28,24 @@ const columns = [
     scopedSlots: { customRender: 'age' },
   },
   {
+    title: '原始地址',
+    dataIndex: 'address1',
+    scopedSlots: {
+      customRender: 'c-tip',
+    },
+  },
+  {
     title: '地址',
     dataIndex: 'address',
     scopedSlots: {
       customRender: 'c-tip',
-      // 对应 d-tooltip 的属性 ( content 除外)
-      config: {
-        len: 12, // 默认 9
+      bind: {
+        len: 12
+      },
+      bindObj: {
+        content(text, record, index){
+          return index + '-' + text
+        }
       }
     },
   },
@@ -73,6 +84,7 @@ for (let i = 0; i < 24; i++) {
     key: i.toString(),
     name: `Edrward ${i}`,
     age: 32,
+    address1: `中华人民共和国-四川省-巴拉巴拉市-巴拉巴拉去${i}`,
     address: `中华人民共和国-四川省-巴拉巴拉市-巴拉巴拉去${i}`,
     status: i % 3,
     cusStatus: i % 3,

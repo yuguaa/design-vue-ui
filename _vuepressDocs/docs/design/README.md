@@ -94,7 +94,65 @@ new Vue({
 ```js
 import CDesign from "design-vue-ui";
 import { apiFc } from "./http/api"; // 封装 的axios 语法
+import dConfig from './utils/dConfig'
 CDesign.config.$apiFc = apiFc;
+CDesign.config.$dConfig = dConfig;
+```
+
+## ./utils/dConfig
+
+> 下面是组件库里面的默认的，如果新增的名字一样，配置名也一样的情况下，以自定义为准
+
+```js
+
+export default {
+  DTable: {
+    comKeys: ['c-badge', 'c-tip'],
+    // 自定义 组件集合
+    comsConfig: {
+      'c-badge': {
+        is: 'a-badge',
+        txtType: 'prop', // text prop
+        // 原版bind
+        bind: {},
+        // 根据参数返回的bind
+        bindObj: {
+          text (text, record) {
+            const _obj = {
+              1: '已启用',
+              0: '已停用',
+              '-1': '已禁用',
+              default: '未知'
+            }
+            return _obj[text] || _obj.default
+          },
+          status (text, record) {
+            const _obj = {
+              1: 'success',
+              0: 'warning',
+              default: 'error'
+            }
+            return _obj[text] || _obj.default
+          }
+        }
+      },
+      'c-tip': {
+        is: 'd-tooltip',
+        txtType: 'prop', // text prop
+        // 原版bind
+        bind: {},
+        // 根据参数返回的bind
+        bindObj: {
+          content (text, record) {
+            return text
+          }
+        }
+      }
+    }
+  }
+}
+
+
 ```
 
 ## 全局变量
