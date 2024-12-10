@@ -1,10 +1,11 @@
 # ant-design-vue 1.7.8 基础上扩展封装组件
 
----
+`design-vue-ui` 是基于 `Ant Design Vue v1.7.8` 版本进行封装的 UI 组件库。为了提升用户体验和组件一致性，我们决定对库进行升级，整合 `Ant Design Vue` 的新版本功能及新增组件。
 
 ## 简介
 
 组件封装，全面拥抱 `Vue2` 生态，正在持续完善中...
+
 # 快速上手
 
 `design-vue-ui` 是基于 `Ant Design Vue v1.7.8` 版本进行封装的 UI 组件库。为了提升用户体验和组件一致性，我们决定对库进行升级，整合 `Ant Design Vue` 的新版本功能及新增组件。
@@ -113,3 +114,5 @@ this.$xmLoading.show();
 this.$xmLoading.show({tip: '加载中', el: document.body});
 this.$xmLoading.hide();
 ```
+
+更多操作请看 文档

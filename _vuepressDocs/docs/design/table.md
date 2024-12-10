@@ -37,7 +37,7 @@ c-tip / c-badge / c-index
 
 `c-index` : 序号，自动  
 `c-tip`: 规定数外溢出鼠标移入效果显示  
-`c-badge`: 状态控制，与 `a-badge` 的 status 属性绑定
+`c-badge`: 状态控制，与 `a-badge` 的 status 属性绑定，可自定义，方式往下
 :::
 
 ::: slot sourceCode
@@ -48,19 +48,51 @@ c-tip / c-badge / c-index
 </box>
 
 ```js
-// c-badge 的默认 属性
-
-const BadgeStatus = {
-  1: 'success',
-  0: 'error',
-  default: 'error'
-}
-
-const DefaultShowStatus = {
-  1: '已启用',
-  0: '已停用',
-  '-1': '已禁用',
-  default: '未知'
+export default {
+  DTable: {
+    comKeys: ['c-badge', 'c-tip'],
+    // 自定义 组件集合
+    comsConfig: {
+      'c-badge': {
+        is: 'a-badge',
+        txtType: 'prop', // text prop
+        // 原版bind
+        bind: {},
+        // 根据参数返回的bind
+        bindObj: {
+          text (text, record) {
+            const _obj = {
+              1: '已启用',
+              0: '已停用',
+              '-1': '已禁用',
+              default: '未知'
+            }
+            return _obj[text] || _obj.default
+          },
+          status (text, record) {
+            const _obj = {
+              1: 'success',
+              0: 'warning',
+              default: 'error'
+            }
+            return _obj[text] || _obj.default
+          }
+        }
+      },
+      'c-tip': {
+        is: 'd-tooltip',
+        txtType: 'prop', // text prop
+        // 原版bind
+        bind: {},
+        // 根据参数返回的bind
+        bindObj: {
+          content (text, record) {
+            return text
+          }
+        }
+      }
+    }
+  }
 }
 ```
 

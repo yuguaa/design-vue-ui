@@ -38,27 +38,20 @@
         <template
           v-for="column in tableSlots"
           :slot="column.scopedSlots.customRender"
-          slot-scope="text, record"
+          slot-scope="text, record, index"
+
         >
-          <d-tooltip
-            v-if="column.scopedSlots.customRender.indexOf('c-tip') !== -1"
-            :content="text"
-            v-bind="column.scopedSlots.config || {}"
-            :key="column.dataindex || column.key"
-          />
-          <a-badge
-            :key="column.dataIndex || column.key"
-            :status="text | statusFilter(column.scopedSlots.status)"
-            :text="
-              column.scopedSlots.des
-                ? record[column.scopedSlots.des]
-                : text | txtFilter(column.scopedSlots.txt)
-            "
-            v-bind="column.scopedSlots.config || {}"
-            v-else-if="
-              column.scopedSlots.customRender.indexOf('c-badge') !== -1
-            "
-          />
+          <component :key="column.dataIndex || column.key"
+            :is="comsConfig[column.scopedSlots.customRenderCopy].is"
+            v-bind="comFilter( column.scopedSlots, { text, record, index })"
+            v-if="comsConfig[column.scopedSlots.customRenderCopy].txtType === 'text'">
+            {{ {text, record, index} | txtFilter(comsConfig, column) }}
+          </component>
+          <component :key="column.dataIndex || column.key + ''"
+            :is="comsConfig[column.scopedSlots.customRenderCopy].is"
+            v-bind="comFilter( column.scopedSlots, { text, record, index })"
+            v-else>
+          </component>
         </template>
         <template
           v-for="item in scopedSlots.filter((v) => v.islot)"
@@ -88,18 +81,8 @@ import TableSet from './set.vue'
 import ScrollBar from './scroll-bar.vue'
 import props from './config/prop'
 import { Table, Badge } from 'ant-design-vue'
-const BadgeStatus = {
-  1: 'success',
-  0: 'error',
-  default: 'error'
-}
+import dConfig from '../_utils/dConfig'
 
-const DefaultShowStatus = {
-  1: '已启用',
-  0: '已停用',
-  '-1': '已禁用',
-  default: '未知'
-}
 export default {
   name: 'DTable',
   props,
@@ -111,12 +94,19 @@ export default {
     ScrollBar
   },
   data () {
+    const { DTable = {} } = this.$xmConfig.$dConfig
     return {
       selectedRowKeys: [], // 已选择的key
       tableSlots: [],
       scopedSlots: [],
       columnsCopy: [],
-      barEl: null
+      badgeProps: DTable.BadgeProps || {},
+      barEl: null,
+      comKeys: [...dConfig.DTable.comKeys, ...(DTable.comKeys || [])],
+      comsConfig: {
+        ...dConfig.DTable.comsConfig,
+        ...(DTable.comsConfig || {})
+      }
     }
   },
   created () {
@@ -132,13 +122,10 @@ export default {
       if (!val && val !== 0) return emptyTxt
       return val
     },
-    statusFilter (val, statusObj) {
-      if (!statusObj) return BadgeStatus[val] || BadgeStatus.default || ''
-      return statusObj[val] || statusObj.default || ''
-    },
-    txtFilter (val, txtObj) {
-      if (!txtObj) return DefaultShowStatus[val] || DefaultShowStatus.default
-      return txtObj[val] || txtObj.default || val
+    txtFilter ({ text, record, index }, comsConfig, column) {
+      if (column.scopedSlots.txtRender) return column.scopedSlots.txtRender(text, record, index)
+      if (comsConfig[column.scopedSlots.customRenderCopy].txtRender) return comsConfig[column.scopedSlots.customRenderCopy].txtRender(text, record, index)
+      return text
     },
     indexFilter (index, pag) {
       if (!pag) return index
@@ -152,6 +139,29 @@ export default {
     }
   },
   methods: {
+    comFilter (scopedSlots, { text, record, index }) {
+      // console.log(comsConfig[renderKey], index)
+      const comsConfig = this.comsConfig
+      const renderKey = scopedSlots.customRenderCopy
+      const _bind = {
+        ...(comsConfig[renderKey]?.bind || {})
+      }
+      const bindObj = comsConfig[renderKey].bindObj || []
+      Object.keys(bindObj).forEach(v => {
+        _bind[v] = bindObj[v](text, record, index)
+      })
+
+      const _cBind = {
+        ...(scopedSlots.bind || {})
+      }
+      const _cBindObj = scopedSlots.bindObj || []
+      Object.keys(_cBindObj).forEach(v => {
+        _cBind[v] = _cBindObj[v](text, record, index)
+      })
+      return {
+        ..._bind, ..._cBind
+      }
+    },
     slotFilter (val, item) {
       const _slotProps = {
         expandedRowRender: 'record,index,indent,expanded',
@@ -208,7 +218,7 @@ export default {
       return entry ? entry[0] : undefined
     },
     getSlots (val) {
-      const _cRender = ['c-tip', 'c-badge']
+      const _cRender = this.comKeys
       this.tableSlots = val.filter((v) => {
         const isExist = _cRender.some((q) => v.scopedSlots?.customRender.indexOf(q) !== -1)
         return v.scopedSlots?.customRender && isExist
@@ -216,9 +226,10 @@ export default {
     },
     initColumns () {
       // 处理 tip status
-      const _cRender = ['c-tip', 'c-badge']
+      const _cRender = this.comKeys
       this.columns.forEach((item, index) => {
         if (item.scopedSlots && _cRender.indexOf(item.scopedSlots?.customRender) !== -1) {
+          item.scopedSlots.customRenderCopy = item.scopedSlots.customRender
           item.scopedSlots.customRender = item.scopedSlots.customRender + index
         }
       })

@@ -12,15 +12,18 @@
     </d-table>
     <c1Vue/>
     <c2Vue/>
+    <c3Vue/>
   </div>
 </template>
 <script>
 import c1Vue from './c1.vue'
 import c2Vue from './c2.vue'
+import c3Vue from './c3.vue'
 export default {
   components: {
     c1Vue,
-    c2Vue
+    c2Vue,
+    c3Vue
   },
   data () {
     const columns = [
