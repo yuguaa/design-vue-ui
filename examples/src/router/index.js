@@ -13,7 +13,7 @@ export const routes = [
   {
     path: '/cascader',
     name: 'cascader',
-    component: () => import('../views/cascader'),
+    component: () => import('../views/cascader/index.vue'),
     meta: {
       title: 'cascader 多选级联'
     }
