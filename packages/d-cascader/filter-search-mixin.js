@@ -7,10 +7,6 @@ export default {
     optionFilterProp: {
       type: String,
       default: 'label'
-    },
-    searchReset: {
-      type: Boolean,
-      default: false
     }
   },
   data () {
