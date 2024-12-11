@@ -8,11 +8,19 @@ import DTextarea from './d-textarea'
 import DInput from './d-input'
 import DInputNumber from './d-input-number'
 import DSelect from './d-select'
+import DTitle from './d-title'
 import DSearch from './d-search'
+import DTour from './d-tour'
 import DMultipleSelect from './d-multiple-select'
 import PageLoading from './page-loading'
 import Loading from './page-loading/loading.js'
 
+DTitle.install = (vue) => {
+  vue.component(DTitle.name, DTitle)
+}
+DTour.install = (vue) => {
+  vue.component(DTour.name, DTour)
+}
 DTooltip.install = (vue) => {
   vue.component(DTooltip.name, DTooltip)
 }
@@ -59,11 +67,13 @@ DMultipleSelect.install = (vue) => {
 const components = [
   PageLoading,
   DTooltip,
+  DTour,
   DTable,
   DCascader,
   DTextarea,
   DScrollBar,
   DInput,
+  DTitle,
   DInputNumber,
   DSearch,
   DSelect,
@@ -98,6 +108,8 @@ export {
   DScrollBar,
   DInput,
   DSearch,
+  DTitle,
+  DTour,
   DInputNumber,
   DSelect,
   DMultipleSelect

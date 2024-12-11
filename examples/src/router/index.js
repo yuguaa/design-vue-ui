@@ -81,6 +81,14 @@ export const routes = [
     meta: {
       title: 'search 自定义搜索'
     }
+  },
+  {
+    path: '/tour',
+    name: 'tour',
+    component: () => import('../views/tour/index.vue'),
+    meta: {
+      title: 'tour 漫游式引导'
+    }
   }
 ]
 
