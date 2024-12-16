@@ -81,6 +81,14 @@ export const routes = [
     meta: {
       title: 'search 自定义搜索'
     }
+  },
+  {
+    path: '/watermark',
+    name: 'watermark',
+    component: () => import('../views/watermark/index.vue'),
+    meta: {
+      title: 'watermark 水印'
+    }
   }
 ]
 
