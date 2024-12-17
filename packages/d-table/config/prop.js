@@ -16,7 +16,7 @@ export default {
     default: []
   },
   pagination: {
-    type: Object,
+    type: [Object, Boolean],
     default: () => {
       return {
         current: 1,
