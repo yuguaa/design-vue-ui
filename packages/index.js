@@ -10,9 +10,13 @@ import DInputNumber from './d-input-number'
 import DSelect from './d-select'
 import DSearch from './d-search'
 import DMultipleSelect from './d-multiple-select'
+import DWatermark from './d-watermark'
 import PageLoading from './page-loading'
 import Loading from './page-loading/loading.js'
 
+DWatermark.install = (vue) => {
+  vue.component(DWatermark.name, DWatermark)
+}
 DTooltip.install = (vue) => {
   vue.component(DTooltip.name, DTooltip)
 }
@@ -63,6 +67,7 @@ const components = [
   DCascader,
   DTextarea,
   DScrollBar,
+  DWatermark,
   DInput,
   DInputNumber,
   DSearch,
@@ -96,6 +101,7 @@ export {
   DCascader,
   DTextarea,
   DScrollBar,
+  DWatermark,
   DInput,
   DSearch,
   DInputNumber,
