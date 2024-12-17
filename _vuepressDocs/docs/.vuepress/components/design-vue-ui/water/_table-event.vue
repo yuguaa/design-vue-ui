@@ -9,13 +9,7 @@ export default {
   },
   data() {
     return {
-      dataSource: [
-        {
-          name: "change",
-          description: "当input 的 value 变化时，调用此函数",
-          callbackProp: "function(value)",
-        },
-      ],
+      dataSource: [],
     };
   },
 };

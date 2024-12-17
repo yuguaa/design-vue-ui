@@ -11,7 +11,7 @@
 <design-vue-ui-water-index />
 
 :::slot content
-在原有 a-input-number 上的扩展
+支持图片、文本水印
 :::
 
 ::: slot sourceCode
@@ -22,7 +22,7 @@
 
 ## API
 
-### inputNumber props
+### watermark props
 
 <design-vue-ui-water-_table />
 
