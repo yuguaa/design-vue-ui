@@ -1,5 +1,5 @@
 <template>
-  <div class="xm_watermark_wrapper">
+  <div class="xm_watermark_wrapper" ref="watermarkRef">
     <canvas ref="watermarkCanvas" class="xm_watermark_canvas"></canvas>
     <slot></slot>
   </div>
@@ -56,9 +56,12 @@ export default {
       const ctx = canvas.getContext('2d')
       const { watermarkType, text, fontSize, angle, opacity, imageUrl, imageWidth, imageHeight } = this
 
+      const rct = this.$refs.watermarkRef.getBoundingClientRect()
+      console.log(rct)
+      const maxNum = rct.width > rct.height ? rct.width : rct.height
       // 设置 canvas 的大小
-      canvas.width = window.innerWidth
-      canvas.height = window.innerHeight
+      canvas.width = maxNum * 2
+      canvas.height = maxNum * 2
 
       // 设置透明度
       ctx.globalAlpha = opacity
@@ -67,7 +70,7 @@ export default {
         // 文本水印
         ctx.font = `${fontSize} Arial`
         ctx.textAlign = 'center'
-        ctx.textBaseline = 'middle'
+        ctx.textBaseline = 'top'
 
         const textWidth = ctx.measureText(text).width
         const textHeight = parseInt(fontSize) // 简单估算文字的高度
@@ -75,8 +78,10 @@ export default {
         const stepX = textWidth + 50 // 水印水平间距
         const stepY = textHeight + 50 // 水印垂直间距
         const rotate = angle * Math.PI / 180 // 角度转换为弧度
-
         ctx.save()
+        if (angle > 0)ctx.translate(0, -maxNum) // 平移到绘制位置
+        else ctx.translate(-maxNum, 0) // 平移到绘制位置
+
         ctx.rotate(rotate)
 
         // 绘制多个水印
@@ -85,7 +90,7 @@ export default {
             ctx.fillText(text, x + textWidth / 2, y + textHeight / 2)
           }
         }
-
+        ctx.rotate(rotate)
         ctx.restore()
       } else if (watermarkType === 'image' && imageUrl) {
         // 图片水印
@@ -98,6 +103,8 @@ export default {
           const rotate = angle * Math.PI / 180 // 角度转换为弧度
 
           ctx.save()
+          if (angle > 0)ctx.translate(0, -maxNum) // 平移到绘制位置
+          else ctx.translate(-maxNum, 0) // 平移到绘制位置
           ctx.rotate(rotate)
 
           // 绘制多个图片水印

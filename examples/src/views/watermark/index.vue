@@ -11,7 +11,7 @@
       :text="'Confidential'"
       :fontSize="'30px'"
       :opacity="0.1"
-      :angle="-45"
+      :angle="45"
       style="margin-top: 100px"
     >
       <div class="content cus-content">
