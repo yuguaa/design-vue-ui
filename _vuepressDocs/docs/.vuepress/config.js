@@ -54,7 +54,8 @@ module.exports = {
             "cascader",
             "multiple-select",
             "table",
-            "search"
+            "search",
+            "water"
           ],
         },
         "update",
