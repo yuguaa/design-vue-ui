@@ -1,37 +1,64 @@
 <template>
-  <div ref="tourRef">
-    <div class="xm_tour_main">
+  <div v-if="isVisible">
+    <div class="xm_tour_main" :style="boxStyle" ref="tourRef">
       <div class="xm_tour_content">
         <div class="xm_tour_arrow"></div>
         <div class="xm_tour_inner">
-          <a-icon type="close" />
-          <div class="xm_tour_cover">
-            <img
-              alt="tour.png"
-              src="https://user-images.githubusercontent.com/5378891/197385811-55df8480-7ff4-44bd-9d43-a7dade598d70.png"
-            />
+          <a-icon type="close"  @click="$emit('close')" />
+          <div class="xm_tour_cover" v-if="currentStep.cover">
+            {{ currentStep.cover }}
           </div>
-          <div class="ant-tour-header">
-            <div class="ant-tour-title">Upload File</div>
+          <div class="ant-tour-header" v-if="currentStep.title">
+            <div class="ant-tour-title">{{ currentStep.title }}</div>
           </div>
-          <div class="xm_tour_description"></div>
+          <div class="xm_tour_description" v-if="currentStep.description">
+            {{ currentStep.description }}
+          </div>
           <div class="xm_tour_footer">
             <div class="xm_tour_indicators">
               <span class="xm_tour_indicator_active xm_tour_indicator"></span>
             </div>
             <div class="xm_tour_buttons">
-              <a-button type="primary" size="small"> Primary </a-button>
+              <a-space :size="12">
+                <a-button
+                  size="small"
+                  @click="onPrev"
+                  v-if="current !== 0"
+                >
+                  上一步
+                </a-button>
+                <a-button
+                  type="primary"
+                  size="small"
+                  @click="onFinish"
+                  v-if="current === steps.length - 1"
+                >
+                  结束导览
+                </a-button>
+                <a-button type="primary" size="small" @click="onNext" v-else>
+                  下一步
+                </a-button>
+              </a-space>
             </div>
           </div>
         </div>
       </div>
     </div>
+    <c-mask :pos="pos"/>
   </div>
 </template>
 
 <script>
+import CMask from './mask.vue'
 export default {
   name: 'd-tour',
+  components: {
+    CMask
+  },
+  model: {
+    prop: 'current', // 指定 v-model 绑定的属性
+    event: 'change' // 指定触发的事件
+  },
   props: {
     title: {
       type: String,
@@ -40,83 +67,96 @@ export default {
     open: {
       type: Boolean,
       default: false
+    },
+    steps: {
+      type: Array,
+      default: () => []
+    },
+    current: {
+      type: Number,
+      default: 0
     }
   },
   data () {
     return {
-      dynamicElement: null
+      boxW: 520,
+      boxStyle: {},
+      currentStep: {},
+      pos: {},
+      dynamicElement: null,
+      isVisible: false // 控制是否显示组件
     }
   },
   watch: {
     open (newValue) {
       newValue ? this.createDynamicElement() : this.removeDynamicElement()
+    },
+    current () {
+      this.updatePos()
     }
   },
+  beforeDestroy () {
+    window.removeEventListener('resize', this.updatePos)
+  },
+  mounted () {
+    window.addEventListener('resize', this.updatePos)
+  },
   methods: {
+    onFinish () {
+      this.$emit('close')
+      this.$emit('finish')
+    },
+    updatePos () {
+      this.currentStep = this.steps[this.current]
+      // 设置当前 位置
+      this.setBoxPos()
+    },
+    setRectAttr () {
+      return {
+        fill: 'transparent',
+        'pointer-events': 'auto',
+        x: '487.84375',
+        y: '0',
+        width: 'calc(100vw - 487.84375px)',
+        height: '100%'
+      }
+    },
+    setBoxPos () {
+      const _El = this.currentStep.target()
+      const rect = _El.getBoundingClientRect()
+      const _num = 4
+      this.pos = {
+        x: rect.left - _num,
+        y: rect.top - _num,
+        width: rect.width + _num * 2,
+        height: rect.height + _num * 2,
+        rx: 2
+      }
+      this.boxStyle = {
+        left: Math.max(rect.left + rect.width / 2 - this.boxW / 2, 0) + 'px',
+        top: rect.top + rect.height + 12 + _num + 'px'
+      }
+    },
+    onPrev () {
+      this.$emit('change', this.current - 1)
+    },
+    onNext () {
+      this.$emit('change', this.current + 1)
+    },
     async createDynamicElement () {
       await this.$nextTick()
-      // 创建一个新的 div 元素
-      const div = document.createElement('div')
-      div.innerHTML = this.$refs.tourRef.innerHTML
-      document.body.appendChild(div)
-
-      this.dynamicElement = div // 保存 div 引用
+      document.body.appendChild(this.$el)
+      this.isVisible = true
+      this.updatePos()
     },
     removeDynamicElement () {
-      if (this.dynamicElement) {
-        // 移除 DOM 元素
-        this.dynamicElement.remove()
-        this.dynamicElement = null // 清除引用
-      }
+      document.body.removeChild(this.$el)
+      this.isVisible = false
     }
   }
 }
 </script>
 
 <style lang="less" scoped>
-.xm_tour_main {
-  position: absolute;
-  width: 520px;
-  font-size: 14px;
-  box-sizing: border-box;
-  background-color: #fff;
-  .xm_tour_content {
-    position: relative;
-    .xm_tour_arrow {
-      position: absolute;
-      top: 0;
-      z-index: 1;
-      display: block;
-      pointer-events: none;
-      width: 16px;
-      height: 16px;
-      overflow: hidden;
-      left: 50%;
-      transform: translateX(-50%) translateY(-100%);
-      &::before{
-        position: absolute;
-    bottom: 0;
-    inset-inline-start: 0;
-    width: 16px;
-    height: 8px;
-    clip-path: path('M 0 8 A 4 4 0 0 0 2.82842712474619 6.82842712474619 L 6.585786437626905 3.0710678118654755 A 2 2 0 0 1 9.414213562373096 3.0710678118654755 L 13.17157287525381 6.82842712474619 A 4 4 0 0 0 16 8 Z');
-    content: "";
-      }
-      &::after{
-        content: "";
-    position: absolute;
-    width: 10px;
-    height: 10px;
-    bottom: 0;
-    inset-inline: 0;
-    margin: auto;
-    border-radius: 0 0 2px 0;
-    transform: translateY(50%) rotate(-135deg);
-    box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.1);
-    z-index: 0;
-    background: transparent;
-      }
-    }
-  }
-}
+@import url("./style/index.less");
 </style>

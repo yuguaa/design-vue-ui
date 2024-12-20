@@ -1,0 +1,76 @@
+.xm_tour_main {
+  position: absolute;
+  width: 520px;
+  // padding: 12px;
+  font-size: 14px;
+  box-sizing: border-box;
+  background-color: #fff;
+  box-shadow: 0px 2px 12px 0px rgba(0, 0, 0, 0.07);
+  z-index: 1002;
+  img {
+    width: 100%;
+  }
+  .xm_tour_content {
+    position: relative;
+    .xm_tour_arrow {
+      position: absolute;
+      z-index: 1;
+      display: block;
+      pointer-events: none;
+      width: 16px;
+      height: 16px;
+      overflow: hidden;
+      left: 50%;
+      transform: translateX(-50%) translateY(-100%);
+      &::after{
+        content: '';
+        position: absolute;
+        bottom: 0;
+        inset-inline-start: 0;
+        width: 16px;
+        height: 8px;
+        background-color: #fff;
+        clip-path: polygon(1.6568542494923806px 100%, 50% 1.6568542494923806px, 14.34314575050762px 100%, 1.6568542494923806px 100%);
+      }
+      &::before{
+        content: "";
+        position: absolute;
+        width: 9px;
+        height: 9px;
+        bottom: 0;
+        inset-inline: 0;
+        margin: auto;
+        border-radius: 0 0 2px 0;
+        transform: translateY(50%) rotate(-135deg);
+        box-shadow: 3px 3px 7px rgba(0, 0, 0, 0.1);
+        z-index: 0;
+        background: transparent;
+      }
+    }
+
+    .xm_tour_inner {
+      padding: 12px;
+      .anticon {
+        position: absolute;
+        top: 16px;
+        inset-inline-end: 16px;
+        color: rgba(0, 0, 0, 0.45);
+        outline: none;
+        width: 22px;
+        height: 22px;
+        cursor: pointer;
+      }
+    }
+
+    .xm_tour_buttons{
+       text-align: right;
+    }
+  }
+}
+
+.xm_tour_mask{
+    position: fixed;
+    inset: 0px;
+    z-index: 1001;
+    pointer-events: none;
+}
