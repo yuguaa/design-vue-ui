@@ -15,6 +15,7 @@
 </template>
 
 <script>
+import img from '../../assets/logo.png'
 export default {
   data() {
     return {
@@ -25,7 +26,7 @@ export default {
         {
           title: 'Upload File',
           description: 'Put your files here.',
-          cover: 'dfs',
+          cover: img,
           target: () => this.$refs?.b1,
         },
         // {

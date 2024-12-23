@@ -4,27 +4,28 @@
       <div class="xm_tour_content">
         <div class="xm_tour_arrow"></div>
         <div class="xm_tour_inner">
-          <a-icon type="close"  @click="$emit('close')" />
-          <div class="xm_tour_cover" v-if="currentStep.cover">
-            {{ currentStep.cover }}
-          </div>
-          <div class="ant-tour-header" v-if="currentStep.title">
-            <div class="ant-tour-title">{{ currentStep.title }}</div>
-          </div>
-          <div class="xm_tour_description" v-if="currentStep.description">
-            {{ currentStep.description }}
-          </div>
-          <div class="xm_tour_footer">
-            <div class="xm_tour_indicators">
-              <span class="xm_tour_indicator_active xm_tour_indicator"></span>
+          <a-icon type="close" @click="$emit('close')" />
+          <slot :current="currentStep">
+            <div class="xm_tour_cover" v-if="currentStep.cover">
+              <img :src="currentStep.cover" alt="cover" srcset="">
             </div>
+            <div class="ant-tour-header" v-if="currentStep.title">
+              <div class="ant-tour-title">{{ currentStep.title }}</div>
+            </div>
+            <div class="xm_tour_description" v-if="currentStep.description">
+              {{ currentStep.description }}
+            </div>
+          </slot>
+
+          <div class="xm_tour_footer">
+            <slot name="indicators">
+              <div class="xm_tour_indicators">
+              <span class="xm_tour_indicator" v-for="(item,index) in steps" :key="index" :class="{xm_tour_indicator_active: current === index }"></span>
+            </div>
+            </slot>
             <div class="xm_tour_buttons">
               <a-space :size="12">
-                <a-button
-                  size="small"
-                  @click="onPrev"
-                  v-if="current !== 0"
-                >
+                <a-button size="small" @click="onPrev" v-if="current !== 0">
                   上一步
                 </a-button>
                 <a-button
@@ -44,7 +45,7 @@
         </div>
       </div>
     </div>
-    <c-mask :pos="pos"/>
+    <c-mask :pos="pos" v-if="mask" :mask="mask"/>
   </div>
 </template>
 
@@ -60,6 +61,11 @@ export default {
     event: 'change' // 指定触发的事件
   },
   props: {
+    // 是否启用蒙层，也可传入配置改变蒙层样式和填充色 {color?: string; }
+    mask: {
+      type: [Boolean, Object],
+      default: true
+    },
     title: {
       type: String,
       default: ''
@@ -134,7 +140,8 @@ export default {
       }
       this.boxStyle = {
         left: Math.max(rect.left + rect.width / 2 - this.boxW / 2, 0) + 'px',
-        top: rect.top + rect.height + 12 + _num + 'px'
+        top: rect.top + rect.height + 12 + _num + 'px',
+        zIndex: this.$attrs.zIndex || 1001
       }
     },
     onPrev () {

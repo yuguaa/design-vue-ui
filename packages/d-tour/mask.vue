@@ -1,5 +1,8 @@
 <template>
-  <div class="xm_tour_mask">
+  <div
+    class="xm_tour_mask"
+    :style="{ zIndex: $attrs.zIndex ? $attrs.zIndex - 1 : 1000 }"
+  >
     <svg style="width: 100%; height: 100%">
       <defs>
         <mask id="ant-tour-mask-vc_unique_4">
@@ -12,7 +15,7 @@
         y="0"
         width="100%"
         height="100%"
-        fill="rgba(0,0,0,0.5)"
+        :fill="rectColor"
         mask="url(#ant-tour-mask-vc_unique_4)"
       ></rect>
       <rect
@@ -52,12 +55,37 @@
 </template>
 <script>
 export default {
+  data () {
+    return {
+      rectColor: 'rgba(0,0,0,0.5)'
+    }
+  },
   props: {
     pos: {
       type: Object,
       default: () => {
         return {}
       }
+    },
+    // 是否启用蒙层，也可传入配置改变蒙层样式和填充色 {  color?: string; }
+    mask: {
+      type: [Boolean, Object],
+      default: true
+    }
+  },
+  watch: {
+    mask: {
+      handler (v) {
+        if (this.isObject(v)) {
+          this.rectColor = v.color || 'rgba(0,0,0,0.5)'
+        }
+      },
+      immediate: true
+    }
+  },
+  methods: {
+    isObject (value) {
+      return typeof value === 'object' && value !== null
     }
   }
 }
