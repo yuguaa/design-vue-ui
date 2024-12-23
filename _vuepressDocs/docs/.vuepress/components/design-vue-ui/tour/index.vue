@@ -1,6 +1,5 @@
 <template>
   <div class="tour-main">
-    <a-button type="primary" @click="open = !open">开始引导</a-button>
     <d-tour
       v-model="current"
       :open="open"
@@ -9,6 +8,7 @@
     ></d-tour>
     <br />
     <a-space>
+      <a-button type="primary" @click="open = !open">开始引导</a-button>
       <a-button type="default" ref="b1">第一个按钮</a-button>
       <a-button type="primary" ref="b2">第二个按钮</a-button>
       <a-button type="primary" ref="b3">第三个按钮</a-button>
@@ -28,12 +28,12 @@ export default {
           title: 'Upload File',
           description: 'Put your files here.',
           cover: '/logo.jpg',
-          target: () => this.$refs?.b1.$el,
+          target: () => this.$refs?.b1.$el
         },
         {
           title: 'Save',
           description: 'Save your changes.',
-          target: () => this.$refs?.b2.$el,
+          target: () => this.$refs?.b2.$el
         },
         {
           title: 'Other Actions',
@@ -49,9 +49,4 @@ export default {
   methods: {}
 }
 </script>
-<style scoped lang="less">
-.tour-main {
-  padding: 48px;
-  padding-left: 300px;
-}
-</style>
+<style scoped lang="less"></style>

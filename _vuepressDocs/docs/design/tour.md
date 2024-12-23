@@ -11,7 +11,7 @@
 <design-vue-ui-tour-index />
 
 :::slot content
-支持图片、文本水印
+配置steps
 :::
 
 ::: slot sourceCode
@@ -20,11 +20,11 @@
 
 </tag>
 
-<tag text="基本">
+<tag text="自定义">
 <design-vue-ui-tour-t1 />
 
 :::slot content
-支持图片、文本水印
+slot 操作
 :::
 
 ::: slot sourceCode
@@ -35,10 +35,14 @@
 
 ## API
 
-### watermark props
+### tour props
 
 <design-vue-ui-tour-_table />
 
-### 事件
+### tour-steps props
 
-<design-vue-ui-tour-_table-event />
+<design-vue-ui-tour-_table-step />
+
+<!-- ### 事件 -->
+
+<!-- <design-vue-ui-tour-_table-event /> -->
