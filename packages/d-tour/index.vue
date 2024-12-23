@@ -75,10 +75,6 @@ export default {
       type: [Boolean, Object],
       default: true
     },
-    title: {
-      type: String,
-      default: ''
-    },
     open: {
       type: Boolean,
       default: false
