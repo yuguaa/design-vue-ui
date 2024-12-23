@@ -1,7 +1,6 @@
 @import "~ant-design-vue/lib/style/themes/index.less";
 .xm_tour_main {
-  position: absolute;
-  width: 520px;
+  position: fixed;
   // padding: 12px;
   font-size: 14px;
   box-sizing: border-box;
@@ -30,6 +29,8 @@
       overflow: hidden;
       left: 50%;
       transform: translateX(-50%) translateY(-100%);
+     
+      
       &::after{
         content: '';
         position: absolute;
@@ -54,7 +55,16 @@
         z-index: 0;
         background: transparent;
       }
+
+      &.below{
+        bottom: 0;
+        transform: rotate(180deg) translateX(-50%) translateY(-100%);
+        &::before{
+          transform: translateY(50%) rotate(45deg);  
+        }
+      }
     }
+   
 
     .xm_tour_inner {
       padding: 12px;

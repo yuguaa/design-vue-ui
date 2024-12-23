@@ -20,6 +20,19 @@
 
 </tag>
 
+<tag text="基本">
+<design-vue-ui-tour-t1 />
+
+:::slot content
+支持图片、文本水印
+:::
+
+::: slot sourceCode
+<<< @/docs/.vuepress/components/design-vue-ui/tour/t1.vue
+:::
+
+</tag>
+
 ## API
 
 ### watermark props

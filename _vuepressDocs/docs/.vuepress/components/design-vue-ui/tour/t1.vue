@@ -1,8 +1,6 @@
 <template>
   <div class="tour-main">
     <a-button type="primary" @click="open = !open">开始引导</a-button>
-    <div style="height: 1300px;"></div>
-    <a-button type="primary" @click="open = !open">开始引导</a-button>
     <d-tour
       v-model="current"
       :open="open"
@@ -19,9 +17,6 @@
     <div v-else-if="current.key === 3">
       <div>key === 3</div>
     </div>
-    <div v-else-if="current.key === 4">
-      <div>key === 4</div>
-    </div>
   </template>
   </d-tour>
     <br />
@@ -30,7 +25,6 @@
       <a-button type="primary" ref="b2">第二个按钮</a-button>
       <a-button type="primary" ref="b3">第三个按钮</a-button>
     </a-space>
-    <a-button type="primary" ref="b4" style="float: right;">第四个按钮</a-button>
   </div>
 </template>
 
@@ -53,10 +47,6 @@ export default {
         {
           key: 3,
           target: () => this.$refs?.b3.$el
-        },
-        {
-          key: 4,
-          target: () => this.$refs?.b4.$el
         }
       ]
     }
