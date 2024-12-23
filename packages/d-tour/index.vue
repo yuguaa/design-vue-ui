@@ -45,7 +45,7 @@
         </div>
       </div>
     </div>
-    <c-mask :pos="pos" v-if="mask" :mask="mask"/>
+    <c-mask :pos="pos" v-if="mask && pos" :mask="mask"/>
   </div>
 </template>
 
@@ -88,7 +88,7 @@ export default {
       boxW: 520,
       boxStyle: {},
       currentStep: {},
-      pos: {},
+      pos: null,
       dynamicElement: null,
       isVisible: false // 控制是否显示组件
     }
@@ -116,16 +116,6 @@ export default {
       this.currentStep = this.steps[this.current]
       // 设置当前 位置
       this.setBoxPos()
-    },
-    setRectAttr () {
-      return {
-        fill: 'transparent',
-        'pointer-events': 'auto',
-        x: '487.84375',
-        y: '0',
-        width: 'calc(100vw - 487.84375px)',
-        height: '100%'
-      }
     },
     setBoxPos () {
       const _El = this.currentStep.target()

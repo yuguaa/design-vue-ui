@@ -25,6 +25,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
+@import "~ant-design-vue/lib/style/themes/index.less";
 .xm_title_main {
   display: flex;
   margin-bottom: 24px;

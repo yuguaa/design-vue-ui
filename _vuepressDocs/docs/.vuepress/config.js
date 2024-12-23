@@ -55,7 +55,8 @@ module.exports = {
             "multiple-select",
             "table",
             "search",
-            "water"
+            "water",
+            "tour"
           ],
         },
         "update",
