@@ -60,10 +60,14 @@
 
 <script>
 import CMask from './mask.vue'
+import { Space, Button, Icon } from 'ant-design-vue'
 export default {
   name: 'd-tour',
   components: {
-    CMask
+    CMask,
+    ASpace: Space,
+    AButton: Button,
+    AIcon: Icon
   },
   model: {
     prop: 'current', // 指定 v-model 绑定的属性
