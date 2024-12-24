@@ -36,7 +36,7 @@
 import { FormModel, Space, Button, Icon } from 'ant-design-vue'
 
 export default {
-  name: 'd-search',
+  name: 'd-search-model',
   components: {
     AFormModel: FormModel,
     AFormModelItem: FormModel.Item,
